@@ -12,7 +12,7 @@
   --- Theme ---
 */
 :root {
-  --shadow: 0 0 10px #0001;
+  --shadow: 0 0 2rem #0002;
 
   --radius: 1rem;
 
@@ -74,11 +74,11 @@ main {
 .modal-body {
   background-color: var(--panel-bg);
   width: 40rem;
-  height: max-content;
   word-break: break-all;
   max-height: 80vh;
   overflow: auto;
-  min-height: 20vh;
+  min-height: 10vh;
+  height: max-content;
   box-shadow: var(--shadow);
   padding: 1rem;
   border-radius: var(--radius);
@@ -98,6 +98,11 @@ main {
 
   margin-bottom: 0.5rem;
   font-weight: bold;
+}
+
+.modal-content {
+  min-height: 5vh;
+  overflow: auto;
 }
 
 .error {

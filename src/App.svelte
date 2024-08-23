@@ -11,14 +11,17 @@ import ModelDropdown from './lib/ModelDropdown.svelte';
 </script>
 
 <main class="{darkMode}">
+  {#if $errorStore != ""}
+    <ErrorModal on:close={() => clearError()}>{$errorStore}</ErrorModal>
+  {/if}
   <header class="header">
     <IconToggle icon="/lighttoggle.svg" width={1.5} bind:value={dark}/>
     <ModelDropdown bind:selectedModel={selectedModel}/>
   </header>
   <div class="content">
-    {#if $errorStore != ""}
-      <ErrorModal on:close={() => clearError()}>{$errorStore}</ErrorModal>
-    {/if}
+    <div class="settings-panel"></div>
+    <div class="chat-panel"></div>
+    <div class="prompts-panel"></div>
   </div>
 </main>
 
@@ -30,6 +33,22 @@ import ModelDropdown from './lib/ModelDropdown.svelte';
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .content {
+    width: 100vw;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  .chat-panel {
+    height: 100%;
+    border-radius: var(--radius) var(--radius) 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--panel-bg);
   }
 
 </style>

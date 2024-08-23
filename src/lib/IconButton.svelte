@@ -1,8 +1,9 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte'
 
-    export let icon: string
-    export let width: number = 2 // rem
+    export let icon: string;
+    export let width: number = 2;
+    export let classes: string = "";
 
     const dispatch = createEventDispatcher()
 
@@ -14,7 +15,7 @@
     })
 </script>
 
-<button style="width: {width}rem; height: {width}rem" on:click={() => dispatch('click')} class="icon-button">
+<button style="width: {width}rem; height: {width}rem" on:click={() => dispatch('click')} class="icon-button {classes}">
     {@html svg}
 </button>
 
