@@ -4,6 +4,7 @@
     import { blur } from "svelte/transition";
     import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona } from "../../api";
     import { formatText, setStorage } from "../../utils"
+  import Avatar from "./Avatar.svelte";
 
     const dispatch = createEventDispatcher()
 
@@ -46,7 +47,7 @@
 
 <div class="message" transition:blur={{duration: 150 }}>
     <div class="message-body {role}">
-        <img class="avatar" src={role === "user" ? "/user.svg" : "/ai-profile.svg"} alt="" srcset="">
+        <Avatar role={role} />
         <div class="body-container">
             <div class="message-header">
                 <span class="title">{role === "user" ? $persona.name : $prompts[$selectedPrompt].name}</span>
@@ -102,6 +103,10 @@
         display: flex;
     }
 
+    .message p {
+        color: var(--fg);
+    }
+
     .message-body {
         width: 100%;
         display: flex;
@@ -153,13 +158,6 @@
         border-radius: var(--radius);
         margin-top: 1rem;
     }
-
-    .avatar {
-        width: 3.5rem;
-        height: 3.5rem;
-        border-radius: 100%;
-    }
-
 
     .content {
         /* allow for linebreaks*/

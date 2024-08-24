@@ -15,6 +15,14 @@ export let prompts = writable([
         prompt: "AI Assistant"
     }
 ])
+
+export let options = writable(
+    {
+        temperature: 0.7,
+        max_tokens: 400,
+    }
+)
+
 export let selectedPrompt = writable(0)
 
 export function addPrompt(prompt: Prompt) {
@@ -79,9 +87,12 @@ function parseMessages(messages: Message[]) {
     const prompt = get(prompts)[get(selectedPrompt)]
     let personaPrompt = `\nUser Persona:\n Name: ${get(persona).name}\nDescription: ${get(persona).description}`
 
-    if (!get(persona).use) {
+    if (get(persona).use == false) {
         personaPrompt = ""
     }
+
+    let messagePrompt = `${prompt.prompt.replaceAll("{{char}}", prompt.name).replaceAll("{{user}}", get(persona).name)}`
+    console.log("personaPrompt:", personaPrompt)
 
     const parsed = messages.map((message) => {
         if (message.images && message.images.length > 0) {
@@ -102,7 +113,7 @@ function parseMessages(messages: Message[]) {
     return [
         {
             role: "system",
-            content: `${prompt.prompt.replaceAll("{{char}}", prompt.name).replaceAll("{{user}}", get(persona).name)}`
+            content: `${messagePrompt}\n${personaPrompt}`
         },
         ...parsed
     ]

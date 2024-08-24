@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { prompts, selectedPrompt, type Chat } from './api';
+  import { options, persona, prompts, selectedPrompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
@@ -12,6 +12,8 @@
   import IconButton from './lib/IconButton.svelte';
   import PromptCreatorModal from './lib/PromptCreatorModal.svelte';
   import { blur } from 'svelte/transition';
+  import PersonaEditor from './lib/PersonaEditor.svelte';
+  import Settings from './lib/Settings.svelte';
 
   export let dark = true
   $: darkMode = dark ? 'dark' : 'light' 
@@ -38,6 +40,15 @@
     })
     selectedChat = getSetting('selectedChat', 0)
     $selectedPrompt = getSetting('selectedPrompt', 0)
+    $persona = getSetting('persona', {
+      use: true,
+      name: "User",
+      description: "The user"
+    })
+    $options = getSetting('options', {
+      temperature: 1,
+      max_tokens: 400,
+    })
   })
 
 </script>
@@ -51,7 +62,11 @@
     <ModelDropdown bind:selectedModel={selectedModel}/>
   </header>
   <div class="content">
-    <div class="settings-panel"></div>
+    <div class="settings-panel">
+      <span class="title panel-title">settings</span>
+      <PersonaEditor/>
+      <Settings/>
+    </div>
     <div class="chat-panel">
       <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
       <MessageSender bind:chats bind:selectedChat bind:selectedModel/>
@@ -72,8 +87,17 @@
 
 <style>
 
-  .panel-title-button {
+  .settings-panel {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .panel-title-button, .panel-title {
     border: none;
+    font-weight: normal;
     background-color: transparent;
     color: var(--text-lower);
     cursor: pointer;
