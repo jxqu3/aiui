@@ -301,3 +301,25 @@ p > span {
   font-weight: bold;
   font-size: 1.2rem;
 }
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip[data-tooltip]::after {
+  content: attr(data-tooltip);
+  top: -4rem;
+  width: 0;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  transition: ease-in-out 0.15s;
+  content: attr(data-tooltip);
+  background: var(--highlighted-bg);
+  border-radius: var(--radius);
+}
+
+.tooltip[data-tooltip]:hover::after {
+  padding: 0.5rem;
+  width: 4rem;
+}

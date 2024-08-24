@@ -57,7 +57,6 @@
         ]]
 
         selectedChat = chats.length - 1
-        console.log(chats[selectedChat])
 
         savePrompt()
       }

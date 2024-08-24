@@ -92,7 +92,6 @@ function parseMessages(messages: Message[]) {
     }
 
     let messagePrompt = `${prompt.prompt.replaceAll("{{char}}", prompt.name).replaceAll("{{user}}", get(persona).name)}`
-    console.log("personaPrompt:", personaPrompt)
 
     const parsed = messages.map((message) => {
         if (message.images && message.images.length > 0) {

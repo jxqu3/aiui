@@ -5,6 +5,8 @@
     export let width: number = 2;
     export let classes: string = "";
 
+    export let tooltip: string = "";
+
     const dispatch = createEventDispatcher()
 
     let svg: string
@@ -15,7 +17,7 @@
     })
 </script>
 
-<button style="width: {width}rem; height: {width}rem" on:click={() => dispatch('click')} class="icon-button {classes}">
+<button data-tooltip="{tooltip}" style="width: {width}rem; height: {width}rem" on:click={() => dispatch('click')} class="icon-button {classes} {tooltip ? 'tooltip' : ''}">
     {@html svg}
 </button>
 

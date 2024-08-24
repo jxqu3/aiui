@@ -72,7 +72,7 @@
     }}/>
 
     <!-- image uploading -->
-    <IconButton width={2.5} icon="/new.svg" on:click={() => fileInput.click()} classes="{image == '' ? '' : 'active'}"/>
+    <IconButton width={2.5} icon="/new.svg" on:click={() => fileInput.click()} classes="{image == '' ? '' : 'active'}" tooltip="Upload an image"/>
 
     <input bind:this={fileInput} type="file" accept="image/*" on:change={
         (e) => {
@@ -93,7 +93,18 @@
             textarea.style.height = `${textarea.scrollHeight}px`
         }}></textarea>
     </div>
-    <IconButton width={2.5} icon="/send.svg"/>
+    <IconButton width={2.5} icon="/send-ai.svg" tooltip="Send message as AI" on:click={
+        () => {
+            chats[selectedChat].push({
+                role: 'assistant',
+                content: writtenMessage,
+            })
+            chats = chats
+            writtenMessage = ""
+            setStorage("chats", chats)
+        }
+    }/>
+    <IconButton width={2.5} icon="/send.svg" on:click={sendMessage}/>
 </div>
 
 <style>
