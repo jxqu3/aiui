@@ -38,6 +38,7 @@
     prompts.subscribe(async (value) => {
       await setStorage("prompts", value)
     })
+    
     selectedChat = getSetting('selectedChat', 0)
     $selectedPrompt = getSetting('selectedPrompt', 0)
     $persona = getSetting('persona', {
@@ -78,7 +79,7 @@
       <ChatSelector bind:chats bind:selectedChat />
       {:else}
       <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">prompts</button></span>
-      <PromptCreatorModal/>
+      <PromptCreatorModal bind:chats={chats} bind:selectedChat/>
       <PromptSelector />
       {/if}
     </div>

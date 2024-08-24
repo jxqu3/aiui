@@ -113,6 +113,13 @@
 
     .message p {
         color: var(--fg);
+        width: 100%;
+    }
+
+    :global(.message span) {
+        overflow-wrap: anywhere;
+        word-break: break-all;
+        white-space: pre-wrap;
     }
 
     .message-body {
@@ -170,7 +177,6 @@
     .content {
         /* allow for linebreaks*/
         white-space: pre-wrap;
-
         line-height: 1.4rem;
     }
 

@@ -3,7 +3,8 @@
   import { createEventDispatcher } from "svelte";
     import { blur } from "svelte/transition";
   import IconButton from "./IconButton.svelte";
-  import { addPrompt } from "../api";
+  import { addPrompt, persona, prompts, selectedPrompt, type Chat } from "../api";
+  import { setSetting, setStorage } from "../utils";
 
   const dispatch = createEventDispatcher();
 
@@ -15,6 +16,9 @@
 
   let promptInputFile: HTMLInputElement
 
+  export let chats: Chat[]
+  export let selectedChat
+
   function savePrompt() {
     if (name && description && prompt) {
       addPrompt({
@@ -23,13 +27,43 @@
         prompt: prompt
       })
       open = false
+      $selectedPrompt = $prompts.length - 1
+      setSetting('selectedPrompt', $selectedPrompt)
+      setStorage('prompts', $prompts)
     } else {
       alert("All fields are required")
     }
   }
 
-  function importPrompt() {
+  function importPrompt(e: Event) {
+    if (!promptInputFile.files) return
+    let file = promptInputFile.files[0]
     
+    if (file) {
+      let reader = new FileReader()
+
+      reader.onload = (e) => {
+        let json = JSON.parse(e.target?.result as string)
+
+        name = json.data.name
+        description = json.data.personality.slice(0, 20).replaceAll("{{char}}", json.data.name) + "..."
+        prompt = `Write next {{char}}'s response.\nPersonality: ${json.data.pesonality}\nScenario: ${json.data.scenario}`
+
+        chats = [...chats, [
+          {
+            role: 'assistant',
+            content: json.data.first_mes.replaceAll("{{char}}", json.data.name).replaceAll("{{user}}", $persona.name)
+          }
+        ]]
+
+        selectedChat = chats.length - 1
+        console.log(chats[selectedChat])
+
+        savePrompt()
+      }
+
+      reader.readAsText(file)
+    }
   }
 
 </script>
@@ -49,7 +83,7 @@
           <button on:click={() => open = false } class="modal-button-secondary">Cancel</button>
           <button on:click={() => savePrompt()} class="modal-button">Save</button>
           <button on:click={() => promptInputFile.click()} class="modal-button-secondary">Import</button>
-          <input type="file" bind:this={promptInputFile} on:change={() => importPrompt()} accept=".json" style="display: none" name="prompt-input-file" id="prompt-input-file">
+          <input type="file" bind:this={promptInputFile} on:change={(e) => importPrompt(e)} accept=".json" style="display: none" name="prompt-input-file" id="prompt-input-file">
       </div>
   </div>
 </div>
