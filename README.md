@@ -9,8 +9,6 @@ Features:
 - Import Character Cards
 - Prompts
 - Cool UI
-- Jailbreak
-- Format Prompt
 - Temperature
 - Persona
 - Model selection
