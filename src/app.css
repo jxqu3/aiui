@@ -126,6 +126,7 @@ main {
 .modal-content {
   min-height: 5vh;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .error {
@@ -153,6 +154,23 @@ main {
   background-color: var(--accent);
 }
 
+.modal-button-secondary {
+  width: 5rem;
+  height: 2rem;
+  border: 3px solid var(--primary);
+  background-color: transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.modal-button-secondary:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+  font-weight: normal;
+}
+
 .btn {
   width: 5rem;
   height: 2rem;
@@ -174,6 +192,59 @@ main {
   transform: scale(0.9);
 }
 
-*:not(.message *, .message), *::before, *::after {
+button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   transition: ease-in-out 0.15s;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.333rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.selector-button {
+  margin: 1rem;
+  width: 90%;
+  height: 2rem;
+  border: none;
+  background-color: var(--panel-bg);
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-lower);
+}
+
+.selector-button:hover {
+  background-color: var(--primary);
+  opacity: 0.8;
+  color: var(--bg);
+}
+
+.selector-button:hover svg * {
+  fill: var(--bg);
+}
+
+.selected {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+.selected * {
+  color: var(--bg);
+}
+
+.modal-input {
+  width: 90%;
+  height: 2rem;
+  border: none;
+  margin: 0.5rem;
+  background-color: var(--bg);
+  border-radius: var(--radius);
+  cursor: text;
+  padding: 0.5rem;
+  color: var(--text-lower);
 }

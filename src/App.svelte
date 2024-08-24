@@ -1,11 +1,17 @@
 <script lang="ts">
-  import type { Chat } from './api';
+  import { onMount } from 'svelte';
+  import { prompts, selectedPrompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
   import MessagesPanel from './lib/Messages/MessagesPanel.svelte';
   import ModelDropdown from './lib/ModelDropdown.svelte';
-  import { clearError, errorStore } from './utils';
+  import { clearError, errorStore, getSetting, getStorage } from './utils';
+  import ChatSelector from './lib/ChatSelector.svelte';
+  import PromptSelector from './lib/PromptSelector.svelte';
+  import IconButton from './lib/IconButton.svelte';
+  import PromptCreatorModal from './lib/PromptCreatorModal.svelte';
+  import { blur } from 'svelte/transition';
 
   export let dark = true
   $: darkMode = dark ? 'dark' : 'light' 
@@ -16,7 +22,18 @@
     [
     ],
   ]
-  let selectedChat = 0
+  let selectedChat: number = 0
+
+  let showChats: boolean = true
+
+  onMount(async () => {
+    const chatsStorage = await getStorage("chats")
+    if (chatsStorage) {
+      chats = chatsStorage
+    }
+    selectedChat = getSetting('selectedChat', 0)
+    $selectedPrompt = getSetting('selectedPrompt', 0)
+  })
 
 </script>
 
@@ -34,11 +51,29 @@
       <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
       <MessageSender bind:chats bind:selectedChat bind:selectedModel/>
     </div>
-    <div class="prompts-panel"></div>
+    <div class="chats-panel">
+      {#if showChats}
+      <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">chat</button></span>
+      <IconButton classes="add" width={1.5} icon="/new.svg" on:click={() => chats = [...chats, []]}/>
+      <ChatSelector bind:chats bind:selectedChat />
+      {:else}
+      <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">prompts</button></span>
+      <PromptCreatorModal/>
+      <PromptSelector />
+      {/if}
+    </div>
   </div>
 </main>
 
 <style>
+
+  .panel-title-button {
+    border: none;
+    background-color: transparent;
+    color: var(--text-lower);
+    cursor: pointer;
+    font-size: 1.3rem;
+  }
 
   .header {
     height: 4rem;
@@ -58,9 +93,22 @@
   .chat-panel {
     height: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background-color: var(--panel-bg);
+  }
+
+  .chats-panel {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--panel-bg);
+    position: relative;
+  }
+
+  :global(.add) {
+    position: absolute;
+    right: 2rem;
   }
 
 </style>

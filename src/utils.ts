@@ -82,10 +82,22 @@ export function setStorage(key: string, value: any) {
 
 // localStorage functions for less important settings.
 
-export function getSetting(key: string): any | null {
-    return JSON.parse(localStorage.getItem(key) ?? 'null');
+export function getSetting(key: string, defaultValue: any = null): any | null {
+    return JSON.parse(localStorage.getItem(key) ?? 'null') ?? defaultValue;
 }
 
 export function setSetting(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function fileToBase64(file: File): Promise<string>{
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    return new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = e => {
+            reject(e)
+            setError("Error reading file: " + e.toString());
+        };
+    });
 }

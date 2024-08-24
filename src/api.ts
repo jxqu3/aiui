@@ -1,9 +1,26 @@
-import { setError } from "./utils";
-import { writable } from "svelte/store";
+import { errorStore, setError } from "./utils";
+import { get, writable } from "svelte/store";
 
 let apiUrl: string = "http://127.0.0.1:11434"; // ollama default api url
 let isGenerating: boolean = false;
-export let generatingStore = writable(isGenerating);
+
+let aborted = false;
+
+export let generatingStore: any = writable(isGenerating);
+
+export let prompts = writable([
+    {
+        name: "AI Assistant",
+        shortDescription: "A simple AI assistant",
+        prompt: "AI Assistant"
+    }
+])
+export let selectedPrompt = writable(0)
+
+export function addPrompt(prompt: Prompt) {
+    prompts.set([...get(prompts), prompt])
+}
+
 
 export type Model = {
     name: string;
@@ -23,7 +40,17 @@ export type Chat = Message[]
 export type Persona = {
     name: string,
     description: string,
-    use: boolean,
+}
+
+export let persona = writable({
+    name: "User",
+    description: "a user",
+})
+
+export type Prompt = {
+    name: string,
+    shortDescription: string,
+    prompt: string,
 }
 
 export function setApiUrl(url: string) {
@@ -46,8 +73,30 @@ export async function getModelList(): Promise<Model[]> {
     }
 }
 
+function parseMessages(messages: Message[]) {
+    return messages.map((message) => {
+        if (message.images && message.images.length > 0) {
+            return {
+                role: message.role,
+                content: message.content,
+                images: [
+                    message.images[0].split(",")[1] // OLLaMA API does not accept the Base64 header.
+                ] 
+            }
+        } else {
+            return {
+                role: message.role,
+                content: message.content
+            }
+        }
+    })
+}
+
 export async function* chatRequest(model: string, messages: Message[], options: any) {
+    generatingStore.set(true);
     try {
+        let parsedMessages = parseMessages(messages)
+        console.log(parsedMessages);
         const response = await fetch(`${apiUrl}/api/chat`, {
             method: 'POST',
             headers: {
@@ -55,10 +104,17 @@ export async function* chatRequest(model: string, messages: Message[], options: 
             },
             body: JSON.stringify({
                 model: model,
-                messages: messages,
-                options: options
+                messages: parsedMessages,
+                options: options,
+                keep_alive: "10m",
             })
         });
+
+        // handle errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         // json streaming
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
@@ -70,17 +126,27 @@ export async function* chatRequest(model: string, messages: Message[], options: 
             done = doneReading;
             generatingStore.set(!done);
             const chunkValue: any = decoder.decode(value);
-            const token = JSON.parse(chunkValue)['message']['content'];
-
+            
             // send to update message 
             if(!done) {
+                if (aborted) {
+                    await reader?.cancel()
+                    aborted = false
+                    break
+                }
+                const token = JSON.parse(chunkValue)['message']['content'];
                 if(token) {
                     yield token
                 }
             }
         }
-    } catch (error) {
-        console.log(error);
+        generatingStore.set(false);
+    } catch (error: any) {
+        setError("Error generating response: " + error.toString());
     }
 }
 
+export function abort() {
+    aborted = true;
+    generatingStore.set(false);
+}

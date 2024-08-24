@@ -1,31 +1,43 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from "svelte";
     import IconButton from "../IconButton.svelte";
-  import { blur } from "svelte/transition";
-  import { chatRequest, type Chat, generatingStore, type Message } from "../../api";
+    import { blur } from "svelte/transition";
+    import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona } from "../../api";
+    import { setStorage } from "../../utils"
 
     const dispatch = createEventDispatcher()
 
     export let message: Message
     export let selectedModel = ""
-    export let chat: Chat
     export let id: number
+    export let chats: Chat[]
+    export let selectedChat: number
 
+    let generations = [
+        message.content
+    ]
+    let selectedGeneration = 0
+    
     $: ({role, images} = message)
 
     const regenerate = async () => {
-        if ($generatingStore) return
+        if ($generatingStore) abort()
         
-        const previousMessages = chat.slice(0, id)
-        
+        const previousMessages = chats[selectedChat].slice(0, id)
+
         // Request yield
+        generations = ["...", ...generations]
+        selectedGeneration = 0
+
         const request = chatRequest(selectedModel, previousMessages, {max_tokens: 100, temperature: 0.8})
-        message.content = ""
+        generations[0] = ""
+        message.content = generations[0]
 
         for await (const response of request) {
-            message.content += response
-            chat = chat
+            generations[0] += response
+            message.content = generations[0]
         }
+        setStorage("chats", chats)
     }
 
     let isEditing = false;
@@ -34,13 +46,15 @@
 
 <div class="message" transition:blur={{duration: 150 }}>
     <div class="message-body {role}">
-        <img src={role === "user" ? "/user.svg" : "/ai-profile.svg"} alt="" srcset="">
+        <img class="avatar" src={role === "user" ? "/user.svg" : "/ai-profile.svg"} alt="" srcset="">
         <div class="body-container">
             <div class="message-header">
-                <span class="sender">{role}</span>
+                <span class="title">{role === "user" ? $persona.name : $prompts[$selectedPrompt].name}</span>
                 <IconButton width={1.5} icon="/edit.svg" on:click={() => isEditing = true}/>
                 <IconButton width={1.5} icon="/remove.svg" on:click={() => dispatch('delete')}/>
+                {#if role === "assistant"} 
                 <IconButton width={1.5} icon="/regen.svg" on:click={() => regenerate()}/>
+                {/if}
             </div>
         
             {#if !isEditing}
@@ -49,18 +63,36 @@
                     {message.content}
                 </p>
             </div>
+            {#if generations.length > 1}
+                <button class="gen-button" on:click={() => {
+                    if(selectedGeneration < generations.length - 1)
+                        selectedGeneration = (selectedGeneration + 1)
+                        message.content = generations[selectedGeneration]
+                    }
+                }>{"<"}</button>
+                <button class="gen-button" on:click={() => {
+                    if(selectedGeneration > 0)
+                        selectedGeneration = (selectedGeneration - 1)
+                        message.content = generations[selectedGeneration]
+                    }
+                }>{">"}</button>
+                <span class="gen-number">
+                    {generations.length - selectedGeneration}/{generations.length}
+                </span>
+            {/if}
             {:else}
             <textarea bind:value={message.content}></textarea>
             <button class="btn" on:click={() => {
                 isEditing = false
-
+                generations[selectedGeneration] = message.content
+                setStorage("chats", chats)
             }}>Save</button>
+            {/if}
+            {#if image}
+                <img class="uploaded-img" src={image} alt="Uploaded" srcset="">
             {/if}
         </div>
     </div>
-    {#if image}
-        <img src={image} alt="" srcset="">
-    {/if}
 </div>
 
 <style>
@@ -115,14 +147,36 @@
         text-align: right;
     }
     
-    .message-body img {
+    .uploaded-img {
+        width: min(80%, 25rem);
+        height: auto;
+        border-radius: var(--radius);
+        margin-top: 1rem;
+    }
+
+    .avatar {
         width: 3.5rem;
         height: 3.5rem;
         border-radius: 100%;
     }
 
+
     .content {
         /* allow for linebreaks*/
         white-space: pre-wrap;
+    }
+
+    .gen-button {
+        border: 0;
+        background-color: #0000;
+        cursor: pointer;
+        padding: 1rem;
+        font-size: 1.3rem;
+        color: var(--text-lower);
+    }
+
+    .gen-button:hover {
+        color: var(--primary);
+        transform: scale(1.2);
     }
 </style>

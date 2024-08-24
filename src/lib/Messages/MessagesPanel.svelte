@@ -9,7 +9,7 @@
 
 <div class="messages-container">
     {#each chats[selectedChat] as message, id}
-        <Message bind:chat={chats[selectedChat]} id={id} bind:selectedModel bind:message={message} on:delete={() => {
+        <Message bind:chats={chats} bind:selectedChat={selectedChat} id={id} bind:selectedModel bind:message={message} on:delete={() => {
             chats[selectedChat].splice(id, 1)
             chats = chats
         }}/>
@@ -18,7 +18,8 @@
 
 <style>
     .messages-container {
-        height: min(100%, 86vh);
+        height: 100%;
+        max-height: 82vh;
         width: 100%;
         display: flex;
         flex-direction: column;
