@@ -1,13 +1,23 @@
 <script lang="ts">
+  import type { Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
-import IconToggle from './lib/IconToggle.svelte';
-import ModelDropdown from './lib/ModelDropdown.svelte';
+  import IconToggle from './lib/IconToggle.svelte';
+  import MessageSender from './lib/Messages/MessageSender.svelte';
+  import MessagesPanel from './lib/Messages/MessagesPanel.svelte';
+  import ModelDropdown from './lib/ModelDropdown.svelte';
   import { clearError, errorStore } from './utils';
 
   export let dark = true
   $: darkMode = dark ? 'dark' : 'light' 
 
   let selectedModel: string = ""
+
+  let chats: Chat[] = [
+    [
+    ],
+  ]
+  let selectedChat = 0
+
 </script>
 
 <main class="{darkMode}">
@@ -20,7 +30,10 @@ import ModelDropdown from './lib/ModelDropdown.svelte';
   </header>
   <div class="content">
     <div class="settings-panel"></div>
-    <div class="chat-panel"></div>
+    <div class="chat-panel">
+      <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
+      <MessageSender bind:chats bind:selectedChat bind:selectedModel/>
+    </div>
     <div class="prompts-panel"></div>
   </div>
 </main>
@@ -46,8 +59,7 @@ import ModelDropdown from './lib/ModelDropdown.svelte';
     height: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     background-color: var(--panel-bg);
   }
 

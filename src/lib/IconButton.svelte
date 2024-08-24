@@ -30,12 +30,13 @@
         transform: scale(1.2);
     }
 
-    :global(.icon-button > svg), :global(.icon-button > svg path) {
+    :global(.icon-button > svg) {
         fill: var(--text-lower);
         width: 100%;
         height: 100%;
-
-        transition: ease-in-out 0.15s;
+    }
+    :global(.icon-button > svg *) {
+        fill: var(--text-lower);
     }
     :global(button:hover > svg path) {
         fill: var(--fg);
