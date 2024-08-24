@@ -6,7 +6,7 @@
   import MessageSender from './lib/Messages/MessageSender.svelte';
   import MessagesPanel from './lib/Messages/MessagesPanel.svelte';
   import ModelDropdown from './lib/ModelDropdown.svelte';
-  import { clearError, errorStore, getSetting, getStorage } from './utils';
+  import { clearError, errorStore, getSetting, getStorage, setStorage } from './utils';
   import ChatSelector from './lib/ChatSelector.svelte';
   import PromptSelector from './lib/PromptSelector.svelte';
   import IconButton from './lib/IconButton.svelte';
@@ -25,12 +25,17 @@
   let selectedChat: number = 0
 
   let showChats: boolean = true
-
+  
   onMount(async () => {
     const chatsStorage = await getStorage("chats")
+    const promptsStorage = await getStorage("prompts")
     if (chatsStorage) {
       chats = chatsStorage
+      prompts.set(promptsStorage)
     }
+    prompts.subscribe(async (value) => {
+      await setStorage("prompts", value)
+    })
     selectedChat = getSetting('selectedChat', 0)
     $selectedPrompt = getSetting('selectedPrompt', 0)
   })

@@ -3,7 +3,7 @@
     import IconButton from "../IconButton.svelte";
     import { blur } from "svelte/transition";
     import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona } from "../../api";
-    import { setStorage } from "../../utils"
+    import { formatText, setStorage } from "../../utils"
 
     const dispatch = createEventDispatcher()
 
@@ -60,7 +60,7 @@
             {#if !isEditing}
             <div class="message-content">
                 <p class="content">
-                    {message.content}
+                    {@html formatText(message.content)}
                 </p>
             </div>
             {#if generations.length > 1}
@@ -164,6 +164,8 @@
     .content {
         /* allow for linebreaks*/
         white-space: pre-wrap;
+
+        line-height: 1.4rem;
     }
 
     .gen-button {

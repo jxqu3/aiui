@@ -29,7 +29,4 @@
 </div>
 
 <style>
-    :global(.selected svg *) {
-        fill: var(--bg) !important
-    }
 </style>

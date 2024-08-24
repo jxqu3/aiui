@@ -21,12 +21,16 @@
 
 .dark {
   --bg: #050e15;
-  --panel-bg: #101920;
+  --panel-bg: #0f1921;
+  --highlighted-bg: #1a252d;
+
   --primary: #95c4e8;
-  --secondary: #462091;
-  --accent: #aa57da;
-  --fg: #d7e7f6;
-  --text-lower: #d7e7f699; 
+  --secondary: #85ccd0;
+  --accent: #00e38f;
+
+  --fg: #cddce7;
+  --text-lower: #cddce799; 
+  --text-lower-inverted: #10192099; 
 }
 
 .dark * {
@@ -34,13 +38,16 @@
 }
 
 .light {
-  --bg: #fcf9fb;
-  --panel-bg: #f0edef;
+  --bg: hsl(320, 2%, 90%);
+  --panel-bg: hsl(320.02 3% 94%);
+  --highlighted-bg: hsl(320.02 47% 100%);
+
   --primary: #a2658a;
-  --secondary: #caaaa8;
-  --accent: #ba9d8e;
+  --secondary: #876ea9;
+  --accent: #5e7cb3;
   --fg: #130c11;
   --text-lower: #8d868b; 
+  --text-lower-inverted: #f0edef99; 
 }
 
 main {
@@ -171,6 +178,31 @@ main {
   font-weight: normal;
 }
 
+.modal-input {
+  width: 90%;
+  height: 2rem;
+  border: none;
+  margin: 0.5rem;
+  background-color: var(--bg);
+  border-radius: var(--radius);
+  cursor: text;
+  padding: 0.5rem;
+  color: var(--text-lower);
+}
+
+.modal-textarea {
+  width: 90%;
+  height: 10rem;
+  resize: vertical;
+  background-color: var(--bg);
+  border-radius: var(--radius);
+  border: 0;
+  padding: 0.5rem;
+  margin: .5rem;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  }
+
 .btn {
   width: 5rem;
   height: 2rem;
@@ -206,7 +238,7 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
 .selector-button {
   margin: 1rem;
   width: 90%;
-  height: 2rem;
+  height: var(--input-height);
   border: none;
   background-color: var(--panel-bg);
   border-radius: var(--radius);
@@ -219,32 +251,53 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
 }
 
 .selector-button:hover {
-  background-color: var(--primary);
-  opacity: 0.8;
-  color: var(--bg);
+  background-color: var(--highlighted-bg);
 }
 
-.selector-button:hover svg * {
-  fill: var(--bg);
+.selected svg * {
+  fill: var(--text-lower-inverted) !important
 }
 
 .selected {
   background-color: var(--primary);
-  color: var(--bg);
+}
+
+.selected:hover {
+  background-color: var(--accent);
 }
 
 .selected * {
   color: var(--bg);
+  fill: var(--text-lower-inverted) ;
 }
 
-.modal-input {
-  width: 90%;
-  height: 2rem;
-  border: none;
-  margin: 0.5rem;
-  background-color: var(--bg);
-  border-radius: var(--radius);
-  cursor: text;
-  padding: 0.5rem;
+/* --- Text formatting --- */
+
+p > span {
+  /* don't collapse whitespace */
+  white-space: pre;
+  display: inline-block;
+}
+
+.asterisk {
   color: var(--text-lower);
+  font-style: italic;
+}
+
+.quote {
+  color: var(--accent);
+}
+
+.code {
+  background-color: var(--highlighted-bg);
+  border-radius: var(--radius);
+  padding: 0.1rem;
+  color: var(--text-lower);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.bold {
+  font-weight: bold;
+  font-size: 1.2rem;
 }

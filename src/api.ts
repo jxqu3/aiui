@@ -40,11 +40,13 @@ export type Chat = Message[]
 export type Persona = {
     name: string,
     description: string,
+    use: boolean
 }
 
 export let persona = writable({
     name: "User",
     description: "a user",
+    use: true
 })
 
 export type Prompt = {
@@ -74,7 +76,14 @@ export async function getModelList(): Promise<Model[]> {
 }
 
 function parseMessages(messages: Message[]) {
-    return messages.map((message) => {
+    const prompt = get(prompts)[get(selectedPrompt)]
+    let personaPrompt = `\nUser Persona:\n Name: ${get(persona).name}\nDescription: ${get(persona).description}`
+
+    if (!get(persona).use) {
+        personaPrompt = ""
+    }
+
+    const parsed = messages.map((message) => {
         if (message.images && message.images.length > 0) {
             return {
                 role: message.role,
@@ -90,13 +99,20 @@ function parseMessages(messages: Message[]) {
             }
         }
     })
+    return [
+        {
+            role: "system",
+            content: `${prompt.prompt.replaceAll("{{char}}", prompt.name).replaceAll("{{user}}", get(persona).name)}`
+        },
+        ...parsed
+    ]
 }
 
 export async function* chatRequest(model: string, messages: Message[], options: any) {
     generatingStore.set(true);
     try {
         let parsedMessages = parseMessages(messages)
-        console.log(parsedMessages);
+        console.log("Request messages:", parsedMessages);
         const response = await fetch(`${apiUrl}/api/chat`, {
             method: 'POST',
             headers: {
@@ -106,7 +122,7 @@ export async function* chatRequest(model: string, messages: Message[], options: 
                 model: model,
                 messages: parsedMessages,
                 options: options,
-                keep_alive: "10m",
+                keep_alive: "30m",
             })
         });
 
