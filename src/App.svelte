@@ -6,7 +6,7 @@
   import MessageSender from './lib/Messages/MessageSender.svelte';
   import MessagesPanel from './lib/Messages/MessagesPanel.svelte';
   import ModelDropdown from './lib/ModelDropdown.svelte';
-  import { clearError, errorStore, getSetting, getStorage, setStorage } from './utils';
+  import { clearError, errorStore, getSetting, getStorage, scrollToBottom, setStorage } from './utils';
   import ChatSelector from './lib/ChatSelector.svelte';
   import PromptSelector from './lib/PromptSelector.svelte';
   import IconButton from './lib/IconButton.svelte';
@@ -69,7 +69,7 @@
     </div>
     <div class="chat-panel">
       <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
-      <MessageSender bind:chats bind:selectedChat bind:selectedModel/>
+      <MessageSender on:written={() => scrollToBottom(document.getElementById("messages-container"))} bind:chats bind:selectedChat bind:selectedModel/>
     </div>
     <div class="chats-panel">
       {#if showChats}

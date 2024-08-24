@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
   import { createEventDispatcher } from "svelte";
     import { blur } from "svelte/transition";
@@ -12,6 +12,8 @@
   let name = ""
   let description = ""
   let prompt = ""
+
+  let promptInputFile: HTMLInputElement
 
   function savePrompt() {
     if (name && description && prompt) {
@@ -46,23 +48,9 @@
       <div class="modal-footer">
           <button on:click={() => open = false } class="modal-button-secondary">Cancel</button>
           <button on:click={() => savePrompt()} class="modal-button">Save</button>
-          <button on:click={() => importPrompt() } class="modal-button-secondary">Import</button>
+          <button on:click={() => promptInputFile.click()} class="modal-button-secondary">Import</button>
+          <input type="file" bind:this={promptInputFile} on:change={() => importPrompt()} accept=".json" style="display: none" name="prompt-input-file" id="prompt-input-file">
       </div>
   </div>
 </div>
 {/if}
-
-<style>
-  .modal-textarea {
-    width: 90%;
-    height: 10rem;
-    resize: vertical;
-    background-color: var(--bg);
-    border-radius: var(--radius);
-    border: 0;
-    padding: 0.5rem;
-    margin: .5rem;
-    overflow-wrap: break-word;
-    overflow-x: hidden;
-}
-</style>

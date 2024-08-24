@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import IconButton from "../IconButton.svelte";
     import { blur } from "svelte/transition";
     import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona } from "../../api";
@@ -13,6 +13,10 @@
     export let id: number
     export let chats: Chat[]
     export let selectedChat: number
+
+    export const scrollUpdate = () => {
+        dispatch('written')
+    }
 
     let generations = [
         message.content
@@ -40,6 +44,10 @@
         }
         setStorage("chats", chats)
     }
+
+    onMount(async () => {
+        dispatch('written', message.content)
+    })
 
     let isEditing = false;
     $: image = images?.[0]

@@ -7,7 +7,7 @@
     export let selectedModel: string;
 </script>
 
-<div class="messages-container">
+<div class="messages-container" id="messages-container">
     {#each chats[selectedChat] as message, id}
         <Message bind:chats={chats} bind:selectedChat={selectedChat} id={id} bind:selectedModel bind:message={message} on:delete={() => {
             chats[selectedChat].splice(id, 1)

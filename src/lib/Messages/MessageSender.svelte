@@ -2,7 +2,10 @@
     import { type Chat, chatRequest } from "../../api";
     import IconButton from "../IconButton.svelte";
     import { generatingStore } from "../../api";
-  import { fileToBase64, setStorage } from "../../utils";
+    import { fileToBase64, setStorage } from "../../utils";
+    import { createEventDispatcher } from "svelte";
+    
+    const dispatch = createEventDispatcher()
 
     export let selectedChat = 0
     export let selectedModel = ""
@@ -35,6 +38,9 @@
         })
         chats = chats
 
+        // scroll to bottom
+        dispatch('written')
+
         const message = chats[selectedChat][chats[selectedChat].length - 1]
         
         // Request yield
@@ -43,6 +49,7 @@
 
         for await (const response of request) {
             message.content += response
+            dispatch('written')
             chats = chats
         }
 

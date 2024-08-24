@@ -179,3 +179,9 @@ export function formatText(input: string) {
 
     return output;
 }
+
+export function scrollToBottom(elem: any) {
+    setTimeout(() => {
+        elem.scrollTo(0, elem.scrollHeight);
+    }, 100);
+}
