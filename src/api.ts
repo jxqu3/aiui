@@ -1,7 +1,7 @@
 import { errorStore, setError } from "./utils";
 import { get, writable } from "svelte/store";
 
-let apiUrl: string = "http://127.0.0.1:11434"; // ollama default api url
+export let apiUrl = writable("http://127.0.0.1:11434"); // ollama default api url
 let isGenerating: boolean = false;
 
 let aborted = false;
@@ -65,12 +65,12 @@ export type Prompt = {
 
 export function setApiUrl(url: string) {
     if (!url) return;
-    apiUrl = url;
+    apiUrl.set(url);
 }
 
 export async function getModelList(): Promise<Model[]> {
     try {
-        const response = await fetch(`${apiUrl}/api/tags`);
+        const response = await fetch(`${get(apiUrl)}/api/tags`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -123,7 +123,7 @@ export async function* chatRequest(model: string, messages: Message[], options: 
     try {
         let parsedMessages = parseMessages(messages)
         console.log("Request messages:", parsedMessages);
-        const response = await fetch(`${apiUrl}/api/chat`, {
+        const response = await fetch(`${get(apiUrl)}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

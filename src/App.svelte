@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { options, persona, prompts, selectedPrompt, type Chat } from './api';
+  import { apiUrl, options, persona, prompts, selectedPrompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
@@ -50,6 +50,8 @@
       temperature: 1,
       max_tokens: 400,
     })
+
+    $apiUrl = getSetting('apiUrl', 'http://127.0.0.1:11434')
   })
 
 </script>

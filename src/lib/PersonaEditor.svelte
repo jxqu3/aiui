@@ -9,7 +9,7 @@
     <ToggleButton label="Use Persona" bind:checked={$persona.use} on:change={() => {
         setSetting('persona', $persona)
     }}/>
-    <input type="text" bind:value={$persona.name} on:change={() => setSetting('persona', $persona)} placeholder="Persona name">
+    <input class="setting-input" type="text" bind:value={$persona.name} on:change={() => setSetting('persona', $persona)} placeholder="Persona name">
     <textarea bind:value={$persona.description} on:change={() => setSetting('persona', $persona)} placeholder="Persona description (eg. A human being)"></textarea>
 </div>
 
@@ -23,7 +23,7 @@
         padding: 1rem;
     }
 
-    input, textarea {
+    textarea, :global(.setting-input) {
         border-radius: var(--radius);
         border: 0;
         background-color: var(--panel-bg);
