@@ -74,6 +74,7 @@
         color: var(--text-lower);
     }
 
+
     .dropdown {
         width: 40rem;
         margin: 0.5rem;
@@ -126,6 +127,10 @@
     .model-element:hover {
         color: var(--fg);
         background-color: var(--secondary);
+    }
+
+    :global(.light .model-dropdown), :global(.light .list) {
+        border: 2px solid var(--text-lower);
     }
 
     .list {

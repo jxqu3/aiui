@@ -42,9 +42,9 @@
   --panel-bg: hsl(320.02 3% 94%);
   --highlighted-bg: hsl(320.02 47% 100%);
 
-  --primary: #a2658a;
-  --secondary: #876ea9;
-  --accent: #5e7cb3;
+  --primary: #bdd5f9;
+  --secondary: #dacbf2;
+  --accent: #73509e;
   --fg: #1a1a1a;
   --text-lower: #8d868b; 
   --text-lower-inverted: #f0edef99; 
@@ -235,6 +235,10 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   color: var(--primary);
 }
 
+.light .title {
+  color: var(--accent);
+}
+
 .selector-button {
   margin: 1rem;
   width: 90%;
@@ -254,6 +258,10 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   background-color: var(--highlighted-bg);
 }
 
+.light .selector-button {
+  border: 2px solid var(--text-lower);
+}
+
 .selected svg * {
   fill: var(--text-lower-inverted) !important
 }
@@ -262,13 +270,22 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   background-color: var(--primary);
 }
 
-.selected:hover {
+.light .selected:hover {
+  background-color: var(--secondary);
+}
+
+.dark .selected:hover {
   background-color: var(--accent);
 }
 
 .selected * {
   color: var(--bg);
   fill: var(--text-lower-inverted) ;
+}
+
+.light .selected * {
+  color: var(--text-lower);
+  fill: var(--text-lower) !important;
 }
 
 /* --- Text formatting --- */
@@ -323,3 +340,4 @@ p > span {
   padding: 0.5rem;
   width: 4rem;
 }
+

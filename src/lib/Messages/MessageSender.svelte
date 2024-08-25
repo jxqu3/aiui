@@ -128,6 +128,11 @@
         position: relative;
     }
 
+    :global(.light .message-sender) {
+        border: 2px solid var(--text-lower);
+    }
+    
+
     :global(.message-sender button) {
         align-self: flex-start;
     }

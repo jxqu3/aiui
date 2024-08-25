@@ -35,6 +35,10 @@
         height: var(--input-height);
     }
 
+    :global(.light input), :global(.light textarea) {
+        border: 2px solid var(--text-lower);
+    }
+
     textarea {
         height: 7rem;
     }

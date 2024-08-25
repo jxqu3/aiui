@@ -3,7 +3,7 @@
   import Message from "./Message.svelte";
 
     export let chats: Chat[];
-    export let selectedChat: number;
+    export let selectedChat: number = 0;
     export let selectedModel: string;
 </script>
 

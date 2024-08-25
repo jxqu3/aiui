@@ -33,6 +33,11 @@
         overflow: hidden;
     }
 
+    :global(.light) .avatar {
+        background-color: var(--fg);
+        border: 2px solid var(--text-lower);
+    }
+
     svg {
         width: 100%;
         height: 100%;
@@ -52,11 +57,7 @@
         filter: opacity(0.5);
     }
 
-    :global(.light) .head {
-        fill: #7c797b;
-    }
-
-    :global(.light) .body {
-        filter: opacity(1);
+    :global(.light) .head, :global(.light) .body, :global(.light) svg path {
+        fill: var(--bg);
     }
 </style>

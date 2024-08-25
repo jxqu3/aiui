@@ -59,7 +59,7 @@
     <ErrorModal on:close={() => clearError()}>{$errorStore}</ErrorModal>
   {/if}
   <header class="header">
-    <IconToggle icon="/lighttoggle.svg" width={1.5} bind:value={dark}/>
+    <IconToggle width={1.5} bind:value={dark}/>
     <ModelDropdown bind:selectedModel={selectedModel}/>
   </header>
   <div class="content">
@@ -126,6 +126,10 @@
     display: grid;
     grid-template-rows: 1fr auto;
     background-color: var(--panel-bg);
+  }
+
+  .light .chat-panel {
+    border: 2px solid var(--text-lower);
   }
 
   .chats-panel {

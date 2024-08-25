@@ -42,10 +42,6 @@
         color: var(--text-lower);
     }
     
-    :global(.light .toggle-button) {
-        box-shadow: inset 0 0 10px 1px #0002;
-    }
-
     .toggle-button::after {
         content: "";
         position: absolute;
@@ -62,4 +58,14 @@
         background-color: var(--primary);
         left: 1.5rem;
     }
+
+    :global(.light .toggle-button), :global(.light .toggle-button::after) {
+        border: 2px solid var(--text-lower);
+    }
+
+    :global(.light .toggle-button), :global(.light .toggle-button::after) {
+        top: -1.5px;
+        left: -1.5px;
+    }
+
 </style>
