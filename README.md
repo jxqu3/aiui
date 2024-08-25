@@ -23,7 +23,9 @@ Features:
 Made in Svelte and Vite. I'll probably port it to electron soon.
 
 ### Requirements
-You'll need: `ollama`, `NodeJS`, `NPM`
+You'll need:
+- [OLLaMA](https://ollama.com/)
+- [NodeJS](https://nodejs.org/)
 
 ### Usage
 `npm install`  
