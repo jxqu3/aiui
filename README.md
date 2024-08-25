@@ -2,6 +2,8 @@
 
 ![AIUI OLLaMA Web UI](image.png)
 
+![AIUI OLLaMA Web UI Light Theme](image-1.png)
+
 This is AIUI🚀, a simple yet powerful web UI for Ollama🦙.
 Features:
 - 💬Chat 
