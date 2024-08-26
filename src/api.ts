@@ -97,7 +97,31 @@ export async function getModelList(): Promise<Model[]> {
                 details: {
                     parameter_size: "?",
                 }
-            }
+            },
+            {
+                name: "gpt-4o",
+                details: {
+                    parameter_size: "?",
+                }
+            },
+            {
+                name: "gpt-4o-mini",
+                details: {
+                    parameter_size: "?",
+                }
+            },
+            {
+                name: "gpt-4-turbo",
+                details: {
+                    parameter_size: "?",
+                }
+            },
+            {
+                name: "kobold",
+                details: {
+                    parameter_size: "?",
+                }
+            },
         ]
     }
 }
@@ -114,12 +138,22 @@ function parseMessages(messages: Message[]) {
 
     const parsed = messages.map((message) => {
         if (message.images && message.images.length > 0) {
-            return {
-                role: message.role,
-                content: message.content,
-                images: [
-                    message.images[0].split(",")[1] // OLLaMA API does not accept the Base64 header.
-                ] 
+            if (get(ollamaApi)) {
+                return {
+                    role: message.role,
+                    content: message.content,
+                    images: [
+                        message.images[0].split(",")[1] // OLLaMA API does not accept the Base64 header.
+                    ] 
+                }
+            } else {
+                return {
+                    role: message.role,
+                    content: message.content,
+                    image_url: [
+                        message.images[0] // OAI API requires the Base64 header.
+                    ] 
+                }
             }
         } else {
             return {
@@ -205,7 +239,7 @@ export async function* chatRequest(model: string, messages: Message[], options: 
                 } else {
                     const lines = chunkValue.split('\n');
                     for (let line of lines) {
-                        const data = line.substring(6)
+                        const data = line.substring(6).trim()
                         if (data === '') continue; // Skip empty lines
                         if (data === '[DONE]') {
                             done = true; // End of the stream
