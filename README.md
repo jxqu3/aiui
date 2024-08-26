@@ -32,5 +32,5 @@ You'll need:
 `npm install`  
 `npm run dev`  
 
-Or, use the start.bat file included which will do that for you!
+Or, use the start.bat file included which will do that for you!  
 Or, use the deployed [AIUI](https://aiui-delta.vercel.app/) which works with your local models without installing the website!

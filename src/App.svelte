@@ -27,6 +27,8 @@
   let selectedChat: number = 0
 
   let showChats: boolean = true
+
+  let settingsOpen: boolean = false
   
   onMount(async () => {
     const chatsStorage = await getStorage("chats")
@@ -68,10 +70,14 @@
     <ModelDropdown bind:selectedModel={selectedModel}/>
   </header>
   <div class="content">
-    <div class="settings-panel">
-      <span class="title panel-title">settings</span>
-      <PersonaEditor/>
-      <Settings/>
+    <div class="settings-panel {settingsOpen ? 'set-open' : ''}">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <span class="title panel-title" on:click={() => settingsOpen = !settingsOpen}>settings</span>
+      <div>
+        <PersonaEditor/>
+        <Settings/>
+      </div>
     </div>
     <div class="chat-panel">
       <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>

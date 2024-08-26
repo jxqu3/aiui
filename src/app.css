@@ -341,3 +341,46 @@ p > span {
   width: 4rem;
 }
 
+@media screen and (max-width: 600px) {
+  .model-dropdown-container {
+    width: 60% !important;
+  }
+
+  main {
+    height: max-content !important;
+  }
+
+  .content {
+    width: 100% !important;
+    height: max-content !important;
+    overflow: scroll !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    scroll-snap-type: mandatory;
+  }
+
+  .settings-panel {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .chat-panel {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .messages-container  {
+    height: 90vh !important;
+  }
+
+  .set-open div {
+    display: none;
+  }
+
+  .chats-panel {
+    width: 100% !important;
+    height: 100vh !important;
+  }
+}
