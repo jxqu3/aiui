@@ -8,6 +8,12 @@
   font-family: Roboto, sans-serif;
 }
 
+html{
+  height: 100svh;
+  margin: 0;
+  padding: 0;
+}
+
 /*
   --- Theme ---
 */
@@ -401,6 +407,7 @@ p > span {
   .chat-panel {
     width: 100% !important;
     height: 100% !important;
+    position: relative;
   }
 
   .chats-panel {

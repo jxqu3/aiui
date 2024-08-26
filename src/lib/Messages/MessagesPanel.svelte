@@ -20,8 +20,8 @@
 
 <style>
     .messages-container {
-        height: 100%;
-        max-height: 82vh;
+        position: relative;
+        max-height: calc(100svh - 3.5rem - 5.5rem);
         width: 100%;
         display: flex;
         flex-direction: column;

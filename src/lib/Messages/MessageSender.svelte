@@ -66,45 +66,47 @@
     }
 </script>
 
-<div class="message-sender">
-    <IconButton width={2.5} icon="/remove.svg" on:click={() =>{
-        chats[selectedChat] = []
-    }}/>
-
-    <!-- image uploading -->
-    <IconButton width={2.5} icon="/new.svg" on:click={() => fileInput.click()} classes="{image == '' ? '' : 'active'}" tooltip="Upload an image"/>
-
-    <input bind:this={fileInput} type="file" accept="image/*" on:change={
-        (e) => {
-            handleImage(e)
-        }
-    }>
-    <!-- image uploading -->
-
-    <div class="text-container">
-        <textarea placeholder="Type a message..." rows="1" bind:this={textarea} bind:value={writtenMessage} on:keyup={(e) => {
-            if (e.key === "Enter" && !e.shiftKey && !$generatingStore) {
-                e.preventDefault()
-                sendMessage()
-                return
+<div class="sender-container">
+    <div class="message-sender">
+        <IconButton width={2.5} icon="/remove.svg" on:click={() =>{
+            chats[selectedChat] = []
+        }}/>
+    
+        <!-- image uploading -->
+        <IconButton width={2.5} icon="/new.svg" on:click={() => fileInput.click()} classes="{image == '' ? '' : 'active'}" tooltip="Upload an image"/>
+    
+        <input bind:this={fileInput} type="file" accept="image/*" on:change={
+            (e) => {
+                handleImage(e)
             }
-            // scale to fit height
-            textarea.style.height = "auto"
-            textarea.style.height = `${textarea.scrollHeight}px`
-        }}></textarea>
+        }>
+        <!-- image uploading -->
+    
+        <div class="text-container">
+            <textarea placeholder="Type a message..." rows="1" bind:this={textarea} bind:value={writtenMessage} on:keyup={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !$generatingStore) {
+                    e.preventDefault()
+                    sendMessage()
+                    return
+                }
+                // scale to fit height
+                textarea.style.height = "auto"
+                textarea.style.height = `${textarea.scrollHeight}px`
+            }}></textarea>
+        </div>
+        <IconButton width={2.5} icon="/send-ai.svg" tooltip="Send message as AI" on:click={
+            () => {
+                chats[selectedChat].push({
+                    role: 'assistant',
+                    content: writtenMessage,
+                })
+                chats = chats
+                writtenMessage = ""
+                setStorage("chats", chats)
+            }
+        }/>
+        <IconButton width={2.5} icon="/send.svg" on:click={sendMessage}/>
     </div>
-    <IconButton width={2.5} icon="/send-ai.svg" tooltip="Send message as AI" on:click={
-        () => {
-            chats[selectedChat].push({
-                role: 'assistant',
-                content: writtenMessage,
-            })
-            chats = chats
-            writtenMessage = ""
-            setStorage("chats", chats)
-        }
-    }/>
-    <IconButton width={2.5} icon="/send.svg" on:click={sendMessage}/>
 </div>
 
 <style>
@@ -123,7 +125,7 @@
         margin: 1rem auto;
         padding: 0.5rem;
         border-radius: var(--radius);
-        height: auto;
+        height: 3.5rem;
         background-color: var(--bg);
         position: relative;
     }
