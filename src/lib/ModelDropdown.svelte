@@ -145,6 +145,7 @@
         box-shadow: var(--shadow);
         display: flex;
         flex-direction: column;
+        z-index: 10;
     }
 
 </style>

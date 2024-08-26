@@ -38,7 +38,7 @@
     prompts.subscribe(async (value) => {
       await setStorage("prompts", value)
     })
-    
+
     selectedChat = getSetting('selectedChat', 0)
     $selectedPrompt = getSetting('selectedPrompt', 0)
     $persona = getSetting('persona', {

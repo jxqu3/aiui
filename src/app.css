@@ -8,10 +8,6 @@
   font-family: Roboto, sans-serif;
 }
 
-main {
-  height: 100svh !important;
-}
-
 /*
   --- Theme ---
 */
@@ -54,14 +50,24 @@ main {
   --text-lower-inverted: #f0edef99; 
 }
 
+body {
+  position: relative;
+  width: 100svw;
+  height: 100svh; 
+}
+
+
 main {
+  position: fixed;
   background-color: var(--bg);
-  width: 100vw;
-  height: 100svh;
   overflow: hidden;
   display: flex;
+  flex: 1;
   flex-direction: column;
   transition: ease-in-out 0.15s;
+
+  height: 100%;
+  width: 100%;
 }
 
 /* --- Placeholder --- */
@@ -384,7 +390,7 @@ p > span {
   .settings-panel {
     transition: .1s ease-in-out !important;
     width: 100% !important;
-    height: 100svh !important;
+    min-height: 100% !important;
     overflow: scroll;
   }
 
@@ -406,19 +412,5 @@ p > span {
   .avatar {
     width: 3rem !important;
     height: 3rem !important;
-  }
-
-  main {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100svh !important;
-    overflow: hidden;
-  }
-
-  body {
-    overflow: hidden !important;
-    height: 100svh !important;
   }
 }

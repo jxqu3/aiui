@@ -174,14 +174,13 @@
 
     @media screen and (max-width: 600px) {
         .message-sender {
-            position: fixed !important;
+            position: absolute;
             z-index: 1000;
             width: 100%;
             bottom: 0;
             left: 0;
             margin: 0;
             border-radius: 0;
-            border-top: 2px solid var(--text-lower);
         }
 
         .text-container {

@@ -9,7 +9,7 @@
 
     const dispatch = createEventDispatcher()
 
-    let svg: string
+    let svg: string = ""
 
     onMount(async () => {
         const response = await fetch(icon)
