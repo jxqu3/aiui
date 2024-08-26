@@ -417,6 +417,6 @@ p > span {
 
   body {
     overflow: hidden !important;
-    background-color: blue;
+    height: 100svh !important;
   }
 }
