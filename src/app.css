@@ -385,6 +385,7 @@ p > span {
     transition: .1s ease-in-out !important;
     width: 100% !important;
     height: 100svh !important;
+    overflow: scroll;
   }
 
   .title {
@@ -398,7 +399,8 @@ p > span {
 
   .chats-panel {
     width: 100% !important;
-    height: 100svh !important;
+    height: 100% !important;
+    overflow: scroll;
   }
 
   .avatar {

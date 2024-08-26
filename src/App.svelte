@@ -133,6 +133,7 @@
     display: grid;
     grid-template-rows: 1fr auto;
     background-color: var(--panel-bg);
+
   }
 
   .light .chat-panel {
