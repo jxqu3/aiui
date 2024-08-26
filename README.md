@@ -1,8 +1,8 @@
 # A.I.U.I 🤘
 
-![AIUI OLLaMA Web UI](image.png)
+![AIUI OLLaMA Web UI Dark Theme](dark.png)
 
-![AIUI OLLaMA Web UI Light Theme](image-1.png)
+![AIUI OLLaMA Web UI Light Theme](light.png)
 
 This is AIUI🚀, a simple yet powerful web UI for ~~Ollama🦙~~ (New: added support for OAI-Compatible APIs! (OAI, Kobold...)).
 Features:
@@ -33,3 +33,4 @@ You'll need:
 `npm run dev`  
 
 Or, use the start.bat file included which will do that for you!
+Or, use the deployed [AIUI](https://aiui-delta.vercel.app/) which works with your local models without installing the website!
