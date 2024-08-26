@@ -278,6 +278,11 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   border: 2px solid var(--text-lower);
 }
 
+.light .selector-button * {
+  color: var(--text-lower) !important;
+  fill: var(--text-lower) !important;
+}
+
 .selected svg * {
   fill: var(--text-lower-inverted) !important
 }
@@ -294,14 +299,9 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
   background-color: var(--accent);
 }
 
-.selected * {
+.dark .selected * {
   color: var(--bg);
   fill: var(--text-lower-inverted) ;
-}
-
-.light .selected * {
-  color: var(--text-lower);
-  fill: var(--text-lower) !important;
 }
 
 /* --- Text formatting --- */
