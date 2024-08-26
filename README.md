@@ -4,9 +4,10 @@
 
 ![AIUI OLLaMA Web UI Light Theme](image-1.png)
 
-This is AIUI🚀, a simple yet powerful web UI for Ollama🦙.
+This is AIUI🚀, a simple yet powerful web UI for ~~Ollama🦙~~ (New: added support for OAI-Compatible APIs! (OAI, Kobold...)).
 Features:
 - 💬Chat 
+- 💵OAI Compatible
 - 🧷Sending images
 - 🤪Import Character Cards
 - 🚀Prompts
@@ -24,7 +25,7 @@ Made in Svelte and Vite. I'll probably port it to electron soon.
 
 ### Requirements
 You'll need:
-- [OLLaMA](https://ollama.com/)
+- [OLLaMA/Kobold/OpenAI Key](https://ollama.com/)
 - [NodeJS](https://nodejs.org/)
 
 ### Usage

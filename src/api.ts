@@ -1,6 +1,9 @@
 import { errorStore, setError } from "./utils";
 import { get, writable } from "svelte/store";
 
+export let ollamaApi = writable(true);
+export let apiKey = writable("YOUR_API_KEY");
+
 export let apiUrl = writable("http://127.0.0.1:11434"); // ollama default api url
 let isGenerating: boolean = false;
 
@@ -69,17 +72,33 @@ export function setApiUrl(url: string) {
 }
 
 export async function getModelList(): Promise<Model[]> {
-    try {
-        const response = await fetch(`${get(apiUrl)}/api/tags`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    if (get(ollamaApi)) {
+        try {
+            const response = await fetch(`${get(apiUrl)}/api/tags`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const json = await response.json();
+            return json["models"];
+        } catch (error: any) {
+            return []
         }
-
-        const json = await response.json();
-        return json["models"];
-    } catch (error: any) {
-        setError("Error loading models: " + error.toString() + "\n Is OLLaMA running?");
-        return []
+    } else {
+        return [
+            {
+                name: "gpt-3.5-turbo",
+                details: {
+                    parameter_size: "?",
+                }
+            },
+            {
+                name: "gpt-4",
+                details: {
+                    parameter_size: "?",
+                }
+            }
+        ]
     }
 }
 
@@ -123,18 +142,36 @@ export async function* chatRequest(model: string, messages: Message[], options: 
     try {
         let parsedMessages = parseMessages(messages)
         console.log("Request messages:", parsedMessages);
-        const response = await fetch(`${get(apiUrl)}/api/chat`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: model,
-                messages: parsedMessages,
-                options: options,
-                keep_alive: "30m",
-            })
-        });
+        let response: Response;
+        if (get(ollamaApi)) {
+            response = await fetch(`${get(apiUrl)}/api/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: parsedMessages,
+                    options: options,
+                    keep_alive: "30m",
+                })
+            });
+        } else {
+            response = await fetch(`${get(apiUrl)}/chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${get(apiKey)}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: parsedMessages,
+                    max_tokens: options.max_tokens,
+                    temperature: options.temperature, 
+                    stream: true
+                })
+            });
+        }
 
         // handle errors
         if (!response.ok) {
@@ -151,7 +188,7 @@ export async function* chatRequest(model: string, messages: Message[], options: 
             const { value, done: doneReading } = await reader!.read();
             done = doneReading;
             generatingStore.set(!done);
-            const chunkValue: any = decoder.decode(value);
+            const chunkValue: any = decoder.decode(value, {stream: true});
             
             // send to update message 
             if(!done) {
@@ -160,9 +197,31 @@ export async function* chatRequest(model: string, messages: Message[], options: 
                     aborted = false
                     break
                 }
-                const token = JSON.parse(chunkValue)['message']['content'];
-                if(token) {
-                    yield token
+                if(get(ollamaApi)) {
+                    const token = JSON.parse(chunkValue)['message']['content'];
+                    if(token) {
+                        yield token
+                    }
+                } else {
+                    const lines = chunkValue.split('\n');
+                    for (let line of lines) {
+                        const data = line.substring(6)
+                        if (data === '') continue; // Skip empty lines
+                        if (data === '[DONE]') {
+                            done = true; // End of the stream
+                            break;
+                        }
+                        try {
+                            const json = JSON.parse(data)
+                            if (json.choices) {
+                                const text = json.choices[0].delta.content || ''; // Extract the content
+                                yield text; // Handle the streamed data
+                            }
+                        } catch (error) {
+                            console.log(line)
+                            setError(`Error parsing JSON: ${error}`);
+                        }
+                    }
                 }
             }
         }

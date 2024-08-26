@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { apiUrl, options, persona, prompts, selectedPrompt, type Chat } from './api';
+  import { apiKey, apiUrl, ollamaApi, options, persona, prompts, selectedPrompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
@@ -52,6 +52,9 @@
     })
 
     $apiUrl = getSetting('apiUrl', 'http://127.0.0.1:11434')
+    $apiKey = getSetting('apiKey', '')
+
+    $ollamaApi = getSetting('ollamaApi', true)
   })
 
 </script>

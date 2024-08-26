@@ -1,16 +1,16 @@
 // Error Handling Functionality
 import { writable } from 'svelte/store';
 
-export let error: string = "";
-export const errorStore = writable(error);
+export const errorStore = writable("");
 
 export function setError(message: string) {
     errorStore.set(message);
+    console.log("error handled: " + message);
 }
 
 export function clearError() {
     errorStore.set("");
-    console.log("error: " + error);
+    console.log("error cleared");
 }
 
 // The storage functions with IndexedDB
@@ -177,7 +177,7 @@ export function formatText(input: string) {
         }
     }
 
-    return output;
+    return output.trim();
 }
 
 export function scrollToBottom(elem: any) {

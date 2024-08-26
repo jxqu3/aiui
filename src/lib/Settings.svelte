@@ -1,20 +1,30 @@
 <script lang="ts">
-    import { options, apiUrl } from "../api";
+    import { options, apiUrl, ollamaApi, apiKey } from "../api";
     import { setSetting } from "../utils";
+  import ToggleButton from "./ToggleButton.svelte";
 </script>
 
 <div class="settings">
-    <div class="slider-container">
+    <div class="container">
+        <label for="api-url">API URL</label>
+        <input class="setting-input" type="text" name="api-url" id="api-url" bind:value={$apiUrl} on:input={() => setSetting('apiUrl', $apiUrl)} placeholder="http://127.0.0.1:11434">
+    </div>
+    <div class="container">
         <label for="temp">Temperature [{$options.temperature}]</label>
         <input bind:value="{$options.temperature}" on:change={() => setSetting('options', $options)} class="slider" type="range" name="temp" id="temp" min="0" max="3" step="0.1">
     </div>
-    <div class="slider-container">
+    <div class="container">
         <label for="max-tokens">Max Tokens [{$options.max_tokens}]</label>
         <input bind:value="{$options.max_tokens}" on:change={() => setSetting('options', $options)} class="slider" type="range" name="max-tokens" id="max-tokens" min="20" max="4096" step="10">
     </div>
-    <div class="slider-container">
-        <label for="api-url">Ollama API URL</label>
-        <input class="setting-input" type="text" name="api-url" id="api-url" bind:value={$apiUrl} on:input={() => setSetting('apiUrl', $apiUrl)} placeholder="Persona name">
+    <div class="container">
+        <div class="toggle">
+            <ToggleButton label="Use OLLaMA API" bind:checked={$ollamaApi} on:change={() => setSetting('ollamaApi', $ollamaApi)}/>
+        </div>
+    </div>
+    <div class="container">
+        <label for="api-key">API KEY (for OAI-Compatible APIs)</label>
+        <input class="setting-input" type="text" name="api-key" id="api-key" bind:value={$apiKey} on:input={() => setSetting('apiKey', $apiKey)} placeholder="API KEY">
     </div>
 </div>
 
@@ -29,12 +39,12 @@
         color: var(--text-lower);
     }
 
-    input {
+    .container input, .toggle {
         margin-top: 1rem;
     }
 
-    .slider-container {
-        margin: 0.5rem 0;
+    .container {
+        margin-bottom: 1rem;
         width: 100%;
     }
 

@@ -11,7 +11,7 @@
     export let selectedModel: string
 
     onMount(async () => {
-        modelList = await getModelList()
+        modelList = []
         selectedModel = getSetting('model') ?? modelList[0].name
     })
 
