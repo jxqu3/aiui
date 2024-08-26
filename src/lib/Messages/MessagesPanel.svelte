@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Chat } from "../../api";
+  import { setSetting, setStorage } from "../../utils";
   import Message from "./Message.svelte";
 
     export let chats: Chat[];
@@ -12,6 +13,7 @@
         <Message bind:chats={chats} bind:selectedChat={selectedChat} id={id} bind:selectedModel bind:message={message} on:delete={() => {
             chats[selectedChat].splice(id, 1)
             chats = chats
+            setStorage("chats", chats)
         }}/>
     {/each}    
 </div>

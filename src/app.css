@@ -8,6 +8,10 @@
   font-family: Roboto, sans-serif;
 }
 
+main {
+  height: 100svh !important;
+}
+
 /*
   --- Theme ---
 */
@@ -53,7 +57,7 @@
 main {
   background-color: var(--bg);
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -86,7 +90,7 @@ main {
 
 .modal {
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -105,9 +109,9 @@ main {
   background-color: var(--panel-bg);
   width: 40rem;
   word-break: break-all;
-  max-height: 80vh;
+  max-height: 80svh;
   overflow: auto;
-  min-height: 10vh;
+  min-height: 10svh;
   height: max-content;
   box-shadow: var(--shadow);
   padding: 1rem;
@@ -131,7 +135,7 @@ main {
 }
 
 .modal-content {
-  min-height: 5vh;
+  min-height: 5svh;
   overflow: auto;
   overflow-x: hidden;
 }
@@ -316,7 +320,10 @@ p > span {
 
 .bold {
   font-weight: bold;
-  font-size: 1.2rem;
+}
+
+.header {
+  font-size: 1.3rem;
 }
 
 .tooltip {
@@ -341,29 +348,47 @@ p > span {
   width: 4rem;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-aspect-ratio: 1/1) {
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
+
   .model-dropdown-container {
     width: 60% !important;
   }
 
-  main {
-    height: max-content !important;
+  .model-dropdown-container > button {
+    width: 5rem !important;
   }
 
-  .content {
+  main > .content {
     width: 100% !important;
-    height: max-content !important;
-    overflow: scroll !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    scroll-snap-type: mandatory;
+    flex: 1;
+    grid-template-columns: 100vw 100vw 100vw !important;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory !important;
+    scroll-snap-stop: always !important;
+    scroll-snap-align: start !important;
+  }
+
+  .content > div {
+    scroll-snap-align: start;
+    height: 100% !important;
+  }
+
+  .messages-container {
+    height: 100% !important;
   }
 
   .settings-panel {
+    transition: .1s ease-in-out !important;
     width: 100% !important;
-    height: 100% !important;
+    height: 100svh !important;
+  }
+
+  .title {
+    margin: 1rem !important;
   }
 
   .chat-panel {
@@ -371,16 +396,27 @@ p > span {
     height: 100% !important;
   }
 
-  .messages-container  {
-    height: 90vh !important;
-  }
-
-  .set-open div {
-    display: none;
-  }
-
   .chats-panel {
     width: 100% !important;
-    height: 100vh !important;
+    height: 100svh !important;
+  }
+
+  .avatar {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  main {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100svh !important;
+    overflow: hidden;
+  }
+
+  body {
+    overflow: hidden !important;
+    background-color: blue;
   }
 }

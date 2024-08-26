@@ -162,6 +162,15 @@ export function formatText(input: string) {
                 output += '"';
                 i++;
             }
+        } else if (input[i] === '#' && input[i + 1] === ' ') {
+            let end = input.indexOf('\n', i + 1);
+            if (end !== -1) {
+                output += `<span class="header bold">${input.slice(i + 2, end)}</span>`;
+                i = end + 1;
+            } else {
+                output += '"';
+                i++;
+            }
         } else if (input[i] === '`') {
             let end = input.indexOf('`', i + 1);
             if (end !== -1) {

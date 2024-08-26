@@ -3,7 +3,7 @@
     import IconButton from "../IconButton.svelte";
     import { generatingStore } from "../../api";
     import { fileToBase64, setStorage } from "../../utils";
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     
     const dispatch = createEventDispatcher()
 
@@ -132,7 +132,6 @@
         border: 2px solid var(--text-lower);
     }
     
-
     :global(.message-sender button) {
         align-self: flex-start;
     }
@@ -171,5 +170,23 @@
 
     input[type="file"] {
         display: none;
+    }
+
+    @media screen and (max-width: 600px) {
+        .message-sender {
+            position: fixed !important;
+            z-index: 1000;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            margin: 0;
+            border-radius: 0;
+            border-top: 2px solid var(--text-lower);
+        }
+
+        .text-container {
+            width: 100%;
+        }
+
     }
 </style>

@@ -68,4 +68,8 @@
         left: -1.5px;
     }
 
+    @media screen and (max-width: 850px) {
+
+    }
+
 </style>

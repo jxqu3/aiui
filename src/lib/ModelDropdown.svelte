@@ -11,8 +11,11 @@
     export let selectedModel: string
 
     onMount(async () => {
-        modelList = []
         selectedModel = getSetting('model') ?? modelList[0].name
+
+        setTimeout(async () => {
+            modelList = await getModelList()
+        }, 1000)
     })
 
     async function refresh() {

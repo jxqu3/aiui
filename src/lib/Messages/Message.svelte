@@ -193,4 +193,22 @@
         color: var(--primary);
         transform: scale(1.2);
     }
+
+    @media screen and (max-width: 600px) {
+        .message {
+            padding: 1rem;
+        }
+
+        .message-header {
+            padding: 2px;
+            height: 2rem;
+            margin-bottom: .1rem;
+        }
+
+        .title {
+            padding: 0;
+            width: max-content;
+            margin: 0 !important;
+        }
+    }
 </style>
