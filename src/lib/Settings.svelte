@@ -31,7 +31,7 @@
 <style>
     .settings {
         width: 100%;
-        height: 100%;
+        height: fit-content;
         padding: 0rem 1rem;
     }
 

@@ -89,7 +89,7 @@
     <div class="content">
       <div class="settings-panel">
         <span class="title panel-title">settings</span>
-        <div>
+        <div class="settings-body">
           <PersonaEditor/>
           <Settings/>
         </div>
@@ -121,6 +121,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    overflow-y: hidden;
   }
 
   .panel-title-button, .panel-title {
@@ -130,6 +132,13 @@
     color: var(--text-lower);
     cursor: pointer;
     font-size: 1.3rem;
+  }
+
+  .settings-body {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; 
+    overflow-x: hidden;
   }
 
   .header {
@@ -155,10 +164,9 @@
   .chat-panel {
     height: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
-    display: grid;
-    grid-template-rows: 1fr auto;
+    display: flex;
+    flex-direction: column;
     background-color: var(--panel-bg);
-
   }
 
   .light .chat-panel {

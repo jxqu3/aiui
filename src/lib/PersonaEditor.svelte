@@ -3,14 +3,17 @@
 
     import { getSetting, setSetting } from '../utils';
     import ToggleButton from './ToggleButton.svelte';
+
 </script>
 
 <div class="persona-editor">
     <ToggleButton label="Use Persona" bind:checked={$persona.use} on:change={() => {
         setSetting('persona', $persona)
     }}/>
+    {#if $persona.use}
     <input class="setting-input" type="text" bind:value={$persona.name} on:input={() => setSetting('persona', $persona)} placeholder="Persona name">
     <textarea bind:value={$persona.description} on:change={() => setSetting('persona', $persona)} placeholder="Persona description (eg. A human being)"></textarea>
+    {/if}
 </div>
 
 <style>
