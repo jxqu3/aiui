@@ -91,8 +91,9 @@
     } 
 
     .prompts {
-        height: calc(90svh - 1rem);
-        overflow-y: scroll;
+        height: 100%;
+        width: 100%;
         overflow-x: hidden;
+        overflow-y: auto;
     }
 </style>

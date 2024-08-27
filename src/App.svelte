@@ -162,6 +162,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-y: hidden;
   }
 
   :global(.add) {
