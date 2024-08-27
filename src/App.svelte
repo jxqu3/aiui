@@ -32,11 +32,7 @@
     try {
       const chatsStorage = await getStorage("chats")
       const promptsStorage = await getStorage("prompts")
-      if (chatsStorage) {
-        chats = chatsStorage
-        prompts.set(promptsStorage)
-      }
-      selectedChat = getSetting('selectedChat', 0)
+      
       $selectedPrompt = getSetting('selectedPrompt', 0)
       $persona = getSetting('persona', {
         use: true,
@@ -52,6 +48,19 @@
       $apiKey = getSetting('apiKey', '')
 
       $ollamaApi = getSetting('ollamaApi', true)
+
+      selectedChat = getSetting('selectedChat', 0)
+      if (chatsStorage) {
+        chats = chatsStorage
+        prompts.set(promptsStorage)
+      }
+
+      if (selectedChat > chats.length - 1) {
+        selectedChat = 0
+      }
+      if ($selectedPrompt > $prompts.length - 1) {
+        $selectedPrompt = 0
+      }
 
       prompts.subscribe(async (value) => {
         await setStorage("prompts", value)
