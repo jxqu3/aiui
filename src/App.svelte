@@ -28,34 +28,45 @@
 
   let showChats: boolean = true
   
-  onMount(async () => {
-    const chatsStorage = await getStorage("chats")
-    const promptsStorage = await getStorage("prompts")
-    if (chatsStorage) {
-      chats = chatsStorage
-      prompts.set(promptsStorage)
+  const loadSettings = async () => {
+    try {
+      const chatsStorage = await getStorage("chats")
+      const promptsStorage = await getStorage("prompts")
+      if (chatsStorage) {
+        chats = chatsStorage
+        prompts.set(promptsStorage)
+      }
+      selectedChat = getSetting('selectedChat', 0)
+      $selectedPrompt = getSetting('selectedPrompt', 0)
+      $persona = getSetting('persona', {
+        use: true,
+        name: "User",
+        description: "The user"
+      })
+      $options = getSetting('options', {
+        temperature: 1,
+        max_tokens: 400,
+      })
+
+      $apiUrl = getSetting('apiUrl', 'http://127.0.0.1:11434')
+      $apiKey = getSetting('apiKey', '')
+
+      $ollamaApi = getSetting('ollamaApi', true)
+
+      prompts.subscribe(async (value) => {
+        await setStorage("prompts", value)
+      })
+
+      console.log("Loaded")
+      return true // Settings loaded
+      
+    } catch (error:any) {
+      errorStore.set("Error loading settings: " + error.toString())
+      return false
     }
-    prompts.subscribe(async (value) => {
-      await setStorage("prompts", value)
-    })
+  }
 
-    selectedChat = getSetting('selectedChat', 0)
-    $selectedPrompt = getSetting('selectedPrompt', 0)
-    $persona = getSetting('persona', {
-      use: true,
-      name: "User",
-      description: "The user"
-    })
-    $options = getSetting('options', {
-      temperature: 1,
-      max_tokens: 400,
-    })
-
-    $apiUrl = getSetting('apiUrl', 'http://127.0.0.1:11434')
-    $apiKey = getSetting('apiKey', '')
-
-    $ollamaApi = getSetting('ollamaApi', true)
-  })
+ // loadSettings() // Load settings (outside of any onMount to prevent race condition)
 
 </script>
 
@@ -63,34 +74,36 @@
   {#if $errorStore != ""}
     <ErrorModal on:close={() => clearError()}>{$errorStore}</ErrorModal>
   {/if}
-  <header class="header">
-    <IconToggle width={1.5} bind:value={dark}/>
-    <ModelDropdown bind:selectedModel={selectedModel}/>
-  </header>
-  <div class="content">
-    <div class="settings-panel">
-      <span class="title panel-title">settings</span>
-      <div>
-        <PersonaEditor/>
-        <Settings/>
+  {#await loadSettings() then _} <!-- wait until settings are loaded -->
+    <header class="header">
+      <IconToggle width={1.5} bind:value={dark}/>
+      <ModelDropdown bind:selectedModel={selectedModel}/>
+    </header>
+    <div class="content">
+      <div class="settings-panel">
+        <span class="title panel-title">settings</span>
+        <div>
+          <PersonaEditor/>
+          <Settings/>
+        </div>
+      </div>
+      <div class="chat-panel">
+        <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
+        <MessageSender on:written={() => scrollToBottom(document.getElementById("messages-container"))} bind:chats bind:selectedChat bind:selectedModel/>
+      </div>
+      <div class="chats-panel">
+        {#if showChats}
+        <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">chat</button></span>
+        <IconButton classes="add" width={1.5} icon="/new.svg" on:click={() => chats = [...chats, []]}/>
+        <ChatSelector bind:chats bind:selectedChat />
+        {:else}
+        <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">prompts</button></span>
+        <PromptCreatorModal bind:chats={chats} bind:selectedChat/>
+        <PromptSelector />
+        {/if}
       </div>
     </div>
-    <div class="chat-panel">
-      <MessagesPanel selectedModel={selectedModel} chats={chats} selectedChat={selectedChat}/>
-      <MessageSender on:written={() => scrollToBottom(document.getElementById("messages-container"))} bind:chats bind:selectedChat bind:selectedModel/>
-    </div>
-    <div class="chats-panel">
-      {#if showChats}
-      <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">chat</button></span>
-      <IconButton classes="add" width={1.5} icon="/new.svg" on:click={() => chats = [...chats, []]}/>
-      <ChatSelector bind:chats bind:selectedChat />
-      {:else}
-      <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">prompts</button></span>
-      <PromptCreatorModal bind:chats={chats} bind:selectedChat/>
-      <PromptSelector />
-      {/if}
-    </div>
-  </div>
+  {/await}
 </main>
 
 <style>
