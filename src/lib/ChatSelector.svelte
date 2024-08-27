@@ -31,7 +31,7 @@
 <style>
     .chats {
         width: 100%;
-        height: 90svh;
+        height: calc(90svh - 1rem);
         overflow-y: scroll; 
         overflow-x: hidden;
     }

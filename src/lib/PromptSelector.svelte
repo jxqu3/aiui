@@ -89,4 +89,10 @@
         height: 6rem;
         flex-direction: column;
     } 
+
+    .prompts {
+        height: calc(90svh - 1rem);
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 </style>
