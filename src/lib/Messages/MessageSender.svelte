@@ -127,7 +127,6 @@
         border-radius: var(--radius);
         height: 3.5rem;
         background-color: var(--bg);
-        position: relative;
     }
 
     :global(.light .message-sender) {
