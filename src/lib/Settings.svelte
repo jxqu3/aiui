@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="container">
-        <label for="api-key">API KEY (for OAI-Compatible APIs)</label>
+        <label for="api-key">API KEY</label>
         <input class="setting-input" type="text" name="api-key" id="api-key" bind:value={$apiKey} on:input={() => setSetting('apiKey', $apiKey)} placeholder="API KEY">
     </div>
 </div>
