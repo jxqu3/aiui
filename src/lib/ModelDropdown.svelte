@@ -12,10 +12,6 @@
 
     onMount(async () => {
         selectedModel = getSetting('model') ?? modelList[0].name
-
-        setTimeout(async () => {
-            modelList = await getModelList()
-        }, 1000)
     })
 
     async function refresh() {
@@ -38,6 +34,7 @@
         <button class="model-dropdown {active ? 'active' : ''}" on:click={() => active = !active}>
             {selectedModel}
         </button>
+        {#await refresh() then _} 
         {#if active}
             <div class="list" transition:slide={{ duration: 200 }}>
                 {#each modelList as model}
@@ -49,6 +46,7 @@
                 {/each}
             </div>
         {/if}
+        {/await}
     </div>
     <IconButton on:click={refresh} classes="dropdown-icon" width={1.5} icon="/regen.svg"/>
 </div>
