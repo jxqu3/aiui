@@ -8,7 +8,7 @@
     export let selectedChat: number = 0;
     export let selectedModel: string;
 
-    let container
+    let container: HTMLDivElement
 
     onMount(() => {
         container.scrollTo(0, container.scrollHeight)
