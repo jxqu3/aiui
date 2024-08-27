@@ -66,8 +66,6 @@
     }
   }
 
- // loadSettings() // Load settings (outside of any onMount to prevent race condition)
-
 </script>
 
 <main class="{darkMode}">
