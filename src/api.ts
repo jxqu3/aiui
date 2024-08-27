@@ -85,44 +85,32 @@ export async function getModelList(): Promise<Model[]> {
             return []
         }
     } else {
-        return [
-            {
-                name: "gpt-3.5-turbo",
-                details: {
-                    parameter_size: "?",
+        try {
+            const response = await fetch(`${get(apiUrl)}/models`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const json = await response.json();
+            return json["data"].map((model: any) => {
+                return {
+                    name: model.id,
+                    details: {
+                        parameter_size: "?"
+                    }
                 }
-            },
-            {
-                name: "gpt-4",
-                details: {
-                    parameter_size: "?",
+            });
+        } catch (error: any) {
+            setError("Error fetching model list: " + error.toString());
+            return [
+                {
+                    name: "error",
+                    details: {
+                        parameter_size: "?"
+                    }
                 }
-            },
-            {
-                name: "gpt-4o",
-                details: {
-                    parameter_size: "?",
-                }
-            },
-            {
-                name: "gpt-4o-mini",
-                details: {
-                    parameter_size: "?",
-                }
-            },
-            {
-                name: "gpt-4-turbo",
-                details: {
-                    parameter_size: "?",
-                }
-            },
-            {
-                name: "kobold",
-                details: {
-                    parameter_size: "?",
-                }
-            },
-        ]
+            ]
+        }
     }
 }
 
