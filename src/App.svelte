@@ -118,13 +118,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .content {
     width: 100vw;
-    height: 100%;
+    height: calc(100svh - 4rem);
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
+    position: absolute;
+    bottom: 0;
   }
 
   .chat-panel {
