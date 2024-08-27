@@ -28,9 +28,14 @@ You'll need:
 - [OLLaMA/Kobold/OpenAI Key](https://ollama.com/)
 - [NodeJS](https://nodejs.org/)
 
-### Usage
+### Installing
 `npm install`  
 `npm run dev`  
 
 Or, use the start.bat file included which will do that for you!  
 Or, use the deployed [AIUI](https://aiui-delta.vercel.app/) which works with your local models without installing the website!
+
+## Usage
+For Ollama, activate "Use OLLaMA API". For OAI-Compatible APIs, deactivate it and put you API Key.
+Set your API URL, make sure your URL does NOT end with `/`. For OAI APIs, make sure you include the `/v1` if it needs it.
+I recommend using Chromeif using Android because other browsers like Edge don't seem to scale properly when opening the keyboard.
