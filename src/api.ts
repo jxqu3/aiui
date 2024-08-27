@@ -137,10 +137,18 @@ function parseMessages(messages: Message[]) {
             } else {
                 return {
                     role: message.role,
-                    content: message.content,
-                    image_url: [
-                        message.images[0] // OAI API requires the Base64 header.
-                    ] 
+                    content: [
+                        {
+                            type: "text",
+                            text: message.content,
+                        },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                url: message.images[0] // OAI API requires the Base64 header.
+                            }
+                        }
+                    ],
                 }
             }
         } else {
