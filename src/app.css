@@ -150,6 +150,7 @@ main {
   min-height: 5svh;
   overflow: auto;
   overflow-x: hidden;
+  color: var(--fg);
 }
 
 .error {
