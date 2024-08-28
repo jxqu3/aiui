@@ -8,6 +8,10 @@
   font-family: Roboto, sans-serif;
 }
 
+.dark * {
+  color: var(--fg);
+}
+
 html{
   height: 100svh;
   margin: 0;
