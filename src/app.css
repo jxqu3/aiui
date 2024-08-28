@@ -36,11 +36,8 @@ html{
 
   --fg: #cddce7;
   --text-lower: #cddce799; 
+  --scrollbar: #cddce722;
   --text-lower-inverted: #10192099; 
-}
-
-.dark * {
-  color: var(--fg);
 }
 
 .light {
@@ -53,6 +50,7 @@ html{
   --accent: #73509e;
   --fg: #1a1a1a;
   --text-lower: #8d868b; 
+  --scrollbar: #8d868b;
   --text-lower-inverted: #f0edef99; 
 }
 
@@ -61,11 +59,12 @@ body {
   width: 100svw;
   height: 100svh; 
   max-height: 100svh; 
+  display: flex;
 }
 
 
 main {
-  position: absolute;
+  position: fixed;
   background-color: var(--bg);
   overflow: hidden;
   display: flex;
@@ -93,7 +92,7 @@ main {
   background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--text-lower);
+  background-color: var(--scrollbar);
   border-radius: var(--radius);
 }
 
