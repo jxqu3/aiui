@@ -101,7 +101,6 @@ export async function getModelList(): Promise<Model[]> {
                 }
             });
         } catch (error: any) {
-            setError("Error fetching model list: " + error.toString());
             return [
                 {
                     name: "error",
