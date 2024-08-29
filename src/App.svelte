@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { apiKey, apiUrl, ollamaApi, options, persona, prompts, selectedPrompt, type Chat } from './api';
+  import { apiKey, apiUrl, instructMode, ollamaApi, options, persona, prompts, selectedPrompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
@@ -48,6 +48,7 @@
       $apiKey = getSetting('apiKey', '')
 
       $ollamaApi = getSetting('ollamaApi', true)
+      $instructMode = getSetting('instructMode', true)
 
       selectedChat = getSetting('selectedChat', 0)
       if (chatsStorage) {

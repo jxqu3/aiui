@@ -2,7 +2,7 @@
     import { createEventDispatcher, onMount } from "svelte";
     import IconButton from "../IconButton.svelte";
     import { blur } from "svelte/transition";
-    import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona } from "../../api";
+    import { chatRequest, type Chat, generatingStore, type Message, abort, prompts, selectedPrompt, persona, instructMode, instructRequest } from "../../api";
     import { formatText, setStorage } from "../../utils"
   import Avatar from "./Avatar.svelte";
 
@@ -34,7 +34,7 @@
         generations = ["...", ...generations]
         selectedGeneration = 0
 
-        const request = chatRequest(selectedModel, previousMessages, {max_tokens: 100, temperature: 0.8})
+        const request = $instructMode ? instructRequest(selectedModel, previousMessages) : chatRequest(selectedModel, previousMessages)
         generations[0] = ""
         message.content = generations[0]
 

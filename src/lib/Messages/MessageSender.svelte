@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type Chat, chatRequest } from "../../api";
+    import { type Chat, chatRequest, instructMode, instructRequest } from "../../api";
     import IconButton from "../IconButton.svelte";
     import { generatingStore } from "../../api";
     import { fileToBase64, setStorage } from "../../utils";
@@ -44,7 +44,7 @@
         const message = chats[selectedChat][chats[selectedChat].length - 1]
         
         // Request yield
-        const request = chatRequest(selectedModel, requestChat, {max_tokens: 100, temperature: 0.8})
+        const request = $instructMode ? instructRequest(selectedModel, requestChat) : chatRequest(selectedModel, requestChat)
         message.content = ""
 
         for await (const response of request) {

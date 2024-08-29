@@ -1,13 +1,18 @@
 <script lang="ts">
-    import { options, apiUrl, ollamaApi, apiKey } from "../api";
+    import { options, apiUrl, ollamaApi, apiKey, instructMode, instructTemplate } from "../api";
     import { setSetting } from "../utils";
   import ToggleButton from "./ToggleButton.svelte";
 </script>
 
-<div class="settings">
+<div class="settings"> 
     <div class="container">
         <label for="api-url">API URL</label>
         <input class="setting-input" type="text" name="api-url" id="api-url" bind:value={$apiUrl} on:input={() => setSetting('apiUrl', $apiUrl)} placeholder="http://127.0.0.1:11434">
+    </div>
+    <div class="container">
+        <div class="toggle">
+            <ToggleButton label="Use OLLaMA API" bind:checked={$ollamaApi} on:change={() => setSetting('ollamaApi', $ollamaApi)}/>
+        </div>
     </div>
     <div class="container">
         <label for="temp">Temperature [{$options.temperature}]</label>
@@ -17,15 +22,30 @@
         <label for="max-tokens">Max Tokens [{$options.max_tokens}]</label>
         <input bind:value="{$options.max_tokens}" on:change={() => setSetting('options', $options)} class="slider" type="range" name="max-tokens" id="max-tokens" min="20" max="4096" step="10">
     </div>
-    <div class="container">
-        <div class="toggle">
-            <ToggleButton label="Use OLLaMA API" bind:checked={$ollamaApi} on:change={() => setSetting('ollamaApi', $ollamaApi)}/>
-        </div>
-    </div>
+    
     <div class="container">
         <label for="api-key">API KEY</label>
         <input class="setting-input" type="text" name="api-key" id="api-key" bind:value={$apiKey} on:input={() => setSetting('apiKey', $apiKey)} placeholder="API KEY">
     </div>
+    <div class="container">
+        <div class="toggle">
+            <ToggleButton label="Instruct Mode" bind:checked={$instructMode} on:change={() => setSetting('instructMode', $instructMode)}/>
+        </div>
+    </div>
+    {#if $instructMode}
+        <div class="container">
+            <label for="systag">System Tag</label>
+            <input class="setting-input" type="text" name="systag" id="systag" bind:value={$instructTemplate.systemTag} on:input={() => setSetting('instructTemplate', $instructTemplate)} placeholder="<|im_start|>system\n">
+        </div>
+        <div class="container">
+            <label for="usertag">User Tag</label>
+            <input class="setting-input" type="text" name="usertag" id="usertag" bind:value={$instructTemplate.userTag} on:input={() => setSetting('instructTemplate', $instructTemplate)} placeholder="<|im_end|>\n<|im_start|>user\n">
+        </div>
+        <div class="container">
+            <label for="assistanttag">Assistant Tag</label>
+            <input class="setting-input" type="text" name="assistanttag" id="assistanttag" bind:value={$instructTemplate.assistantTag} on:input={() => setSetting('instructTemplate', $instructTemplate)} placeholder="<|im_end|>\n<|im_start|>assistant\n">
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -33,6 +53,10 @@
         width: 100%;
         height: fit-content;
         padding: 0rem 1rem;
+    }
+
+    input {
+        white-space: pre-line;
     }
 
     label {

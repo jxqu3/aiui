@@ -4,6 +4,13 @@ import { get, writable } from "svelte/store";
 export let ollamaApi = writable(true);
 export let apiKey = writable("YOUR_API_KEY");
 
+export let instructMode = writable(false);
+export let instructTemplate = writable({
+    systemTag: "<|system|>\\n",
+    userTag: "<|user|>\\n",
+    assistantTag: "<|assistant|>\\n"
+});
+
 export let apiUrl = writable("http://127.0.0.1:11434"); // ollama default api url
 let isGenerating: boolean = false;
 
@@ -166,7 +173,9 @@ function parseMessages(messages: Message[]) {
     ]
 }
 
-export async function* chatRequest(model: string, messages: Message[], options: any) {
+export async function* chatRequest(model: string, messages: Message[]) {
+    const gotOptions = get(options)
+
     generatingStore.set(true);
     try {
         let parsedMessages = parseMessages(messages)
@@ -181,7 +190,7 @@ export async function* chatRequest(model: string, messages: Message[], options: 
                 body: JSON.stringify({
                     model: model,
                     messages: parsedMessages,
-                    options: options,
+                    options: gotOptions,
                     keep_alive: "30m",
                 })
             });
@@ -195,8 +204,8 @@ export async function* chatRequest(model: string, messages: Message[], options: 
                 body: JSON.stringify({
                     model: model,
                     messages: parsedMessages,
-                    max_tokens: options.max_tokens,
-                    temperature: options.temperature, 
+                    max_tokens: gotOptions.max_tokens,
+                    temperature: gotOptions.temperature, 
                     stream: true
                 })
             });
@@ -259,6 +268,123 @@ export async function* chatRequest(model: string, messages: Message[], options: 
         setError("Error generating response: " + error.toString());
     }
 }
+
+
+function parsePrompt(messages: any[]) {
+    let prompt = "";
+    const template = get(instructTemplate)
+
+    messages.forEach((message) => {
+        if (message.role == "system") {
+            prompt += template.systemTag.replaceAll("\\n", "\n") + message.content
+        } else if (message.role == "user") {
+            prompt += template.userTag.replaceAll("\\n", "\n") + message.content
+        } else if (message.role == "assistant") {
+            prompt += template.assistantTag.replaceAll("\\n", "\n") + message.content
+        }
+    })
+    return prompt
+    
+}
+
+
+export async function* instructRequest(model: string, messages: Message[]) {
+    generatingStore.set(true);
+    const gotOptions = get(options)
+    try {
+        let parsedMessages = parseMessages(messages);
+        let prompt = parsePrompt(parsedMessages);
+        console.log("Request prompt:", prompt);
+        let response: Response;
+        if (get(ollamaApi)) {
+            response = await fetch(`${get(apiUrl)}/api/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    prompt: prompt,
+                    raw: true,
+                    options: gotOptions,
+                    keep_alive: "30m",
+                })
+            });
+        } else {
+            response = await fetch(`${get(apiUrl)}/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${get(apiKey)}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    prompt: prompt,
+                    max_tokens: gotOptions.max_tokens,
+                    temperature: gotOptions.temperature, 
+                    stream: true
+                })
+            });
+        }
+
+        // handle errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // json streaming
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        let done = false;
+        
+        while (!done) {
+            const { value, done: doneReading } = await reader!.read();
+            done = doneReading;
+            generatingStore.set(!done);
+            const chunkValue: any = decoder.decode(value, {stream: true});
+            
+            // send to update message 
+            if(!done) {
+                if (aborted) {
+                    await reader?.cancel()
+                    aborted = false
+                    break
+                }
+                if(get(ollamaApi)) {
+                    const token = JSON.parse(chunkValue)['response'];
+                    if(token) {
+                        yield token
+                    }
+                } else {
+                    const lines = chunkValue.split('\n');
+                    for (let line of lines) {
+                        const data = line.substring(6).trim()
+                        if (data === '') continue; // Skip empty lines
+                        if (data === '[DONE]') {
+                            done = true; // End of the stream
+                            break;
+                        }
+                        try {
+                            const json = JSON.parse(data)
+                            if (json.choices) {
+                                const text = json.choices[0].text || ''; // Extract the content
+                                yield text; // Handle the streamed data
+                            }
+                        } catch (error) {
+                            console.log(line)
+                            setError(`Error parsing JSON: ${error}`);
+                        }
+                    }
+                }
+            }
+        }
+        generatingStore.set(false);
+    } catch (error: any) {
+        setError("Error generating response: " + error.toString());
+    }
+}
+
 
 export function abort() {
     aborted = true;

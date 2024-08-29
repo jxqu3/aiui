@@ -10,10 +10,7 @@
     let modelList: Model[] = []
     export let selectedModel: string
 
-    onMount(async () => {
-        selectedModel = getSetting('model') ?? modelList[0].name
-    })
-
+    selectedModel = getSetting('model') ?? modelList[0].name
     async function refresh() {
         modelList = []
         const lastModel = selectedModel
