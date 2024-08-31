@@ -14,7 +14,7 @@
             setSetting('selectedChat', selectedChat)
         }}>
             <span>{chat[0] ? `"${chat[0].content.slice(0, 15)}..."` : "empty chat"}</span>
-            <IconButton classes="remove-chat" width={1.5} icon="/remove.svg" on:click={() => {
+            <IconButton classes="remove-chat" width={1.5} icon="remove" on:click={() => {
                 selectedChat = 0
                 if(id == 0){
                     chats[0] = []

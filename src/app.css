@@ -285,7 +285,6 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
 
 .light .selector-button * {
   color: var(--text-lower) !important;
-  fill: var(--text-lower) !important;
 }
 
 .selected svg * {
@@ -305,8 +304,7 @@ button, main, .chat-panel, svg, svg *, ::after, ::before, .message-sender {
 }
 
 .dark .selected * {
-  color: var(--bg);
-  fill: var(--text-lower-inverted) ;
+  color: var(--bg) !important;
 }
 
 /* --- Text formatting --- */
