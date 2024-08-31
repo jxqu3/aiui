@@ -48,7 +48,7 @@
             <span>{prompt.name}</span>
             <span class="description">{prompt.shortDescription}</span>
             <div class="prompt-buttons">
-                <IconButton width={1.5} icon="/remove.svg" on:click={() => {
+                <IconButton width={1.5} icon="remove" on:click={() => {
                     if($selectedPrompt == id)
                         $selectedPrompt = 0
                     if(id == 0){
@@ -61,7 +61,7 @@
                     }
                     $prompts = $prompts.filter((_, i) => i != id)
                     }}/>
-                <IconButton width={1.5} icon="/edit.svg" on:click={() => {
+                <IconButton width={1.5} icon="edit" on:click={() => {
                     name = prompt.name
                     description = prompt.shortDescription
                     newPrompt = prompt.prompt

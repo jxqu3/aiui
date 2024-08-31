@@ -102,7 +102,7 @@
       <div class="chats-panel">
         {#if showChats}
         <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">chat</button></span>
-        <IconButton classes="add" width={1.5} icon="/new.svg" on:click={() => chats = [...chats, []]}/>
+        <IconButton classes="add" width={1.5} icon="new" on:click={() => chats = [...chats, []]}/>
         <ChatSelector bind:chats bind:selectedChat />
         {:else}
         <span class="title"><button on:click={() => showChats=!showChats} class="panel-title-button">prompts</button></span>

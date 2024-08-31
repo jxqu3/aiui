@@ -9,16 +9,10 @@
 
     const dispatch = createEventDispatcher()
 
-    let svg: string = ""
-
-    onMount(async () => {
-        const response = await fetch(icon)
-        svg = await response.text()
-    })
 </script>
 
 <button data-tooltip="{tooltip}" style="width: {width}rem; height: {width}rem" on:click={() => dispatch('click')} class="icon-button {classes} {tooltip ? 'tooltip' : ''}">
-    {@html svg}
+    <i class="i-{icon}" style="font-size: {width}em;"></i>
 </button>
 
 <style>
@@ -28,19 +22,20 @@
         cursor: pointer;
     }   
 
-    .icon-button:hover > :global(svg) {
+    i {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-lower);
+    }
+
+    .icon-button:hover {
         transform: scale(1.2);
     }
 
-    :global(.icon-button > svg) {
-        fill: var(--text-lower);
-        width: 100%;
-        height: 100%;
-    }
-    :global(.icon-button > svg *) {
-        fill: var(--text-lower);
-    }
-    :global(button:hover > svg path) {
-        fill: var(--fg);
+    .icon-button:hover i {
+        color: var(--fg);
     }
 </style>

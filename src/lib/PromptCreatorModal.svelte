@@ -67,7 +67,7 @@
 
 </script>
 
-<IconButton classes="add" width={1.5} icon="/new.svg" on:click={() => open = true}></IconButton>
+<IconButton classes="add" width={1.5} icon="new" on:click={() => open = true}></IconButton>
 
 {#if open}
 <div class="modal">

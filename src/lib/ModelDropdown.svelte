@@ -45,7 +45,7 @@
         {/if}
         {/await}
     </div>
-    <IconButton on:click={refresh} classes="dropdown-icon" width={1.5} icon="/regen.svg"/>
+    <IconButton on:click={refresh} classes="dropdown-icon" width={1.5} icon="regen"/>
 </div>
 
 <style>

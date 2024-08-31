@@ -59,10 +59,10 @@
         <div class="body-container">
             <div class="message-header">
                 <span class="title">{role === "user" ? $persona.name : $prompts[$selectedPrompt].name}</span>
-                <IconButton width={1.5} icon="/edit.svg" on:click={() => isEditing = true}/>
-                <IconButton width={1.5} icon="/remove.svg" on:click={() => dispatch('delete')}/>
+                <IconButton width={1.5} icon="edit" on:click={() => isEditing = true}/>
+                <IconButton width={1.5} icon="remove" on:click={() => dispatch('delete')}/>
                 {#if role === "assistant"} 
-                <IconButton width={1.5} icon="/regen.svg" on:click={() => regenerate()}/>
+                <IconButton width={1.5} icon="regen" on:click={() => regenerate()}/>
                 {/if}
             </div>
         

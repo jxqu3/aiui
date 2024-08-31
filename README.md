@@ -21,7 +21,10 @@ Features:
 - 💻Multiple saved chats
 - 🌍Saved in browser
 
-Made in Svelte and Vite. I'll probably port it to electron soon.
+Made in Svelte and Vite. I'll probably port it to desktop soon.
+
+### News:
+- *(2024-8-29):* Added support for Instruction Mode (preview)
 
 ### Requirements
 You'll need:
