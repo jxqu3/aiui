@@ -25,8 +25,8 @@
     
     $: ({role, images} = message)
 
-    // Update message content when generations changes
-    $: message.content = generations[selectedGeneration]
+    // Update message content when the gen changes
+    $: generations[0] = message.content
 
     const regenerate = async () => {
         if ($generatingStore) abort()
@@ -94,7 +94,7 @@
                 </span>
             {/if}
             {:else}
-            <textarea bind:value={generations[selectedGeneration]}></textarea>
+            <textarea bind:value={message.content}></textarea>
             <button class="btn" on:click={() => {
                 isEditing = false
                 generations[selectedGeneration] = message.content
