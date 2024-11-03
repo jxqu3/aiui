@@ -25,6 +25,9 @@
     
     $: ({role, images} = message)
 
+    // Update message content when generations changes
+    $: message.content = generations[selectedGeneration]
+
     const regenerate = async () => {
         if ($generatingStore) abort()
         
@@ -35,12 +38,12 @@
         selectedGeneration = 0
 
         const request = $instructMode ? instructRequest(selectedModel, previousMessages) : chatRequest(selectedModel, previousMessages)
-        generations[0] = ""
-        message.content = generations[0]
+        message.content = ""
+        generations[selectedGeneration] = message.content
 
         for await (const response of request) {
-            generations[0] += response
-            message.content = generations[0]
+            message.content += response
+            generations[selectedGeneration] = message.content
         }
         setStorage("chats", chats)
     }
