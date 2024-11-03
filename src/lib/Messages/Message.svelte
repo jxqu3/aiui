@@ -77,17 +77,18 @@
             </div>
             {#if generations.length > 1}
                 <button class="gen-button" on:click={() => {
-                    if(selectedGeneration < generations.length - 1)
-                        selectedGeneration = (selectedGeneration + 1)
+                    if(selectedGeneration < generations.length - 1) {
+                        console.log(selectedGeneration)
+                        selectedGeneration = selectedGeneration + 1
                         message.content = generations[selectedGeneration]
                     }
-                }>{"<"}</button>
+                }}>{"<"}</button>
                 <button class="gen-button" on:click={() => {
-                    if(selectedGeneration > 0)
-                        selectedGeneration = (selectedGeneration - 1)
+                    if(selectedGeneration > 0) {
+                        selectedGeneration = selectedGeneration - 1
                         message.content = generations[selectedGeneration]
                     }
-                }>{">"}</button>
+                }}>{">"}</button>
                 <span class="gen-number">
                     {generations.length - selectedGeneration}/{generations.length}
                 </span>
