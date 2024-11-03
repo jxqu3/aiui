@@ -10,7 +10,7 @@
     let modelList: Model[] = []
     export let selectedModel: string
 
-    selectedModel = getSetting('model') ?? modelList[0].name
+    selectedModel = getSetting('model') ?? ""
     async function refresh() {
         modelList = []
         const lastModel = selectedModel
@@ -20,7 +20,12 @@
             if (modelList.find(m => m.name === lastModel)) {
                 selectedModel = lastModel
             } else {
-                selectedModel = modelList[0].name
+                if (modelList.length > 0) {
+                    selectedModel = modelList[0].name
+                }
+                else {
+                    selectedModel = ""
+                }
             }
         }, 200)
     }

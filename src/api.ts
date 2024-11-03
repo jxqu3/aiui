@@ -85,6 +85,7 @@ export async function getModelList(): Promise<Model[]> {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
     
             const json = await response.json();
             return json["models"];
