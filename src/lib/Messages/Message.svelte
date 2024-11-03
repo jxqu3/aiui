@@ -39,11 +39,11 @@
 
         const request = $instructMode ? instructRequest(selectedModel, previousMessages) : chatRequest(selectedModel, previousMessages)
         message.content = ""
-        generations[selectedGeneration] = message.content
+        generations[0] = message.content
 
         for await (const response of request) {
             message.content += response
-            generations[selectedGeneration] = message.content
+            generations[0] = message.content
         }
         setStorage("chats", chats)
     }
