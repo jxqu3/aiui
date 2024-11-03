@@ -18,8 +18,29 @@
     let textarea: HTMLTextAreaElement
 
     const sendMessage = async () => {
-        if (writtenMessage.trim() == "" || $generatingStore) return
-        
+        if ($generatingStore) return
+
+        if (writtenMessage.trim() == "") {
+            // continue last message
+            const message = chats[selectedChat][chats[selectedChat].length - 1]
+            const requestChat = chats[selectedChat].map(chat => chat)
+            
+            requestChat.push({
+                role: 'system',
+                content: "[Continue]",
+            })
+            
+            dispatch('written')
+            const request = $instructMode ? instructRequest(selectedModel, requestChat) : chatRequest(selectedModel, requestChat)
+
+            for await (const response of request) {
+                message.content += response
+                dispatch('written')
+                chats = chats
+            }
+            return
+        }
+
         chats[selectedChat].push({
             role: 'user',
             content: writtenMessage,

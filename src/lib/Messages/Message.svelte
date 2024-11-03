@@ -94,7 +94,7 @@
                 </span>
             {/if}
             {:else}
-            <textarea bind:value={message.content}></textarea>
+            <textarea bind:value={generations[selectedGeneration]}></textarea>
             <button class="btn" on:click={() => {
                 isEditing = false
                 generations[selectedGeneration] = message.content
