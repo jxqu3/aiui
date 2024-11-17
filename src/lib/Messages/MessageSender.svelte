@@ -110,9 +110,6 @@
                     sendMessage()
                     return
                 }
-                // scale to fit height
-                textarea.style.height = "auto"
-                textarea.style.height = `${textarea.scrollHeight}px`
             }}></textarea>
         </div>
         <IconButton width={2.5} icon="send-ai" tooltip="Send message as AI" on:click={
