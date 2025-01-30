@@ -1,7 +1,11 @@
 <script lang="ts">
-    import { options, apiUrl, ollamaApi, apiKey, instructMode, instructTemplate } from "../api";
+  import { blur } from "svelte/transition";
+    import { options, apiUrl, ollamaApi, apiKey, instructMode, instructTemplate, sysprompt } from "../api";
     import { setSetting } from "../utils";
   import ToggleButton from "./ToggleButton.svelte";
+
+    let syspromptShow = false
+
 </script>
 
 <div class="settings"> 
@@ -46,6 +50,26 @@
             <input class="setting-input" type="text" name="assistanttag" id="assistanttag" bind:value={$instructTemplate.assistantTag} on:input={() => setSetting('instructTemplate', $instructTemplate)} placeholder="<|im_end|>\n<|im_start|>assistant\n">
         </div>
     {/if}
+
+    <div class="container">
+        <button on:click={() => syspromptShow = !syspromptShow} class="settings-button">System Prompt/Jailbreak</button>
+    </div>
+    {#if syspromptShow}
+    <div transition:blur={{duration: 200}} class="modal">
+        <div class="modal-body">
+            <h1 class="modal-title">System Prompt/Jailbreak</h1>
+            <div class="modal-content">
+              <input type="text" bind:value={$sysprompt} placeholder="System Prompt/Jailbreak" class="modal-input">
+            </div>
+            <div class="modal-footer">
+                <button on:click={() => {
+                    setSetting('sysprompt', $sysprompt)
+                    syspromptShow = false
+                } } class="modal-button">OK</button>
+            </div>
+        </div>
+    </div>
+    {/if}
 </div>
 
 <style>
@@ -84,4 +108,21 @@
 
         accent-color: var(--primary);
     }
+
+    .settings-button {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-radius: var(--radius);
+        padding: 0.5rem;
+        background-color: var(--panel-bg);
+        border: none;
+        color: var(--text-lower);
+    }
+
+    .settings-button:hover {
+        background-color: var(--primary);
+        color: var(--bg);
+    }
+
 </style>
+

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { apiKey, apiUrl, instructMode, ollamaApi, options, persona, prompts, selectedPrompt, type Chat } from './api';
+  import { apiKey, apiUrl, instructMode, ollamaApi, options, persona, prompts, selectedPrompt, sysprompt, type Chat } from './api';
   import ErrorModal from './lib/ErrorModal.svelte';
   import IconToggle from './lib/IconToggle.svelte';
   import MessageSender from './lib/Messages/MessageSender.svelte';
@@ -32,6 +32,8 @@
     try {
       const chatsStorage = await getStorage("chats")
       const promptsStorage = await getStorage("prompts")
+
+      $sysprompt = getSetting('sysprompt', "You are a helpful assistant.")
       
       $selectedPrompt = getSetting('selectedPrompt', 0)
       $persona = getSetting('persona', {

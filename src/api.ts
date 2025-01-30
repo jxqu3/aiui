@@ -67,6 +67,8 @@ export let persona = writable({
     use: true
 })
 
+export let sysprompt = writable("You are a helpful assistant.")
+
 export type Prompt = {
     name: string,
     shortDescription: string,
@@ -168,7 +170,7 @@ function parseMessages(messages: Message[]) {
     return [
         {
             role: "system",
-            content: `${messagePrompt}\n${personaPrompt}`
+            content: `${get(sysprompt)}${messagePrompt}\n${personaPrompt}`
         },
         ...parsed
     ]
